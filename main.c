@@ -1,11 +1,12 @@
 /* Test file for the dictionary abstract data type.
 
-Uses functions from lbst_public.h */
+Uses functions from lbst_public.h ,lbst_helper.h */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "lbst_public.h"
+#include "lbst_helper.h"
 
 int main() {
     int i, key, data;
@@ -18,7 +19,9 @@ int main() {
         data = rand() % 20;
         printf("Inserting (%d,%d)\n", key, data);
         lbst_insert(root, key, data);
+        lbst_print(root);
     }
+    lbst_print_tree(root);
     lbst_delete_dict(root);
     return 0;
 }

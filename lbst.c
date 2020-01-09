@@ -1,28 +1,28 @@
 /* An abstract data type for storing dictionaries
 
-Declarations are in lbst.h and lbst_public.h */
+Declarations are in lbst.h, lbst_public.h */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "lbst.h"
+#include "lbst_public.h"
 
-static void lbst_print_tree(struct lbst *root);
-static void lbst_print_nodes(struct lbst_node *node);
 static void lbst_delete_root(struct lbst *root);
 static void lbst_delete_nodes(struct lbst_node *node);
+
 
 /* Description: See lbst_public.h */
 void lbst_insert(lbst_T root, int key, int data) {
     struct lbst *root_private = root;
     struct lbst_node *ptr, *n1, *n2, *parent, *grparent;
 
-    /* special case: root has not been initialed using lbst_create() */
+    /* special case: root has not been initialized using lbst_create() */
     if (root_private == NULL) {
         printf("Error inserting: NULL root\n");
         return;
     }
 
-    /* special case: 0 internal nodes */
+    /* special case: 0 (key, data) nodes */
     if (root_private->head == NULL) {
         ptr = malloc(sizeof(struct lbst_node));
         if (ptr == NULL) {
@@ -171,31 +171,6 @@ static void lbst_delete_nodes(struct lbst_node *node) {
 
 void lbst_range_query(lbst_T root, int first, int last) {
 
-}
-
-/* Prints the full tree structure of the dictionary (preorder traversal) */
-static void lbst_print_tree(struct lbst *root) {
-    if (root == NULL) {
-        return;
-    }
-    lbst_print_nodes(root->head);
-}
-
-/* Description: Same as lbst_print_tree */
-static void lbst_print_nodes(struct lbst_node *node) {
-    if (node == NULL) {
-        return;
-    }
-    if (node->next != NULL) {
-        printf("node: <%d, %d> -- ", node->key, node->data);
-        printf("next node: <%d, %d>\n", node->next->key, node->next->data);
-    }
-    else {
-        printf("node: <%d, %d>\n", node->key, node->data);
-    }
-
-    lbst_print_nodes(node->lc);
-    lbst_print_nodes(node->rc);
 }
 
 /* Description: See lbst_public.h */

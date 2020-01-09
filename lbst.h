@@ -1,13 +1,11 @@
-/* An abstract data type for storing dictionaries.
-
-NOTE: If we choose to hide internal implementation details, only
-lbst_public.h should be distributed. */
+/* An abstract data type for storing dictionaries */
 
 #ifndef _LBST_H_
 #define _LBST_H_
 
 #include <stdio.h>
 #include "lbst_public.h"
+
 
 /* A special node for the root node of the dictionary.
 Pointers to lbst_T (declared in lbst_public.h) should be

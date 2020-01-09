@@ -7,6 +7,7 @@
 
 typedef void* lbst_T;
 
+
 /* Inserts a new (key, data) into the dictionary. If key is already in the
 dictionary, its data is updated */
 void lbst_insert(lbst_T root, int key, int data);
