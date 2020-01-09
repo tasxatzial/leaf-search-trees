@@ -181,6 +181,30 @@ static void lbst_print_tree(lbst_T root, int is_root) {
     lbst_print_tree(node->rc, 0);
 }
 
-void lbst_print(lbst_T root, int first_call) {
+/* Description: See lbst_public.h */
+void lbst_print(lbst_T root) {
+    struct lbst *root_private;
+    struct lbst_node *ptr, *prev;
+
+    root_private = root;
+    if (root_private == NULL) {
+        return;
+    }
+
+    /* Go to leftmost leaf node */
+    ptr = root_private->head;
+    prev = NULL;
+    while(ptr != NULL) {
+        prev = ptr;
+        ptr = ptr->lc;
+    }
+
+    /* Use the next pointers to traverse the nodes
+    that start from the leftmost leaf to the rightmost leaf */
+    while(prev != NULL) {
+        printf("<%d, %d> ", prev->key, prev->data);
+        prev = prev->next;
+    }
     
+    printf("\n");
 }

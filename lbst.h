@@ -17,11 +17,14 @@ struct lbst {
     struct lbst_node *head;
 };
 
-/* Nodes that store a (key, data) pair. They are always
-internal nodes in the dictionary.
+/* Nodes that store a (key, data) pair.
 Pointers to lbst_T (declared in lbst_public.h) should be cast
 to this struct when they are not treated as the root node of
-the dictionary. */
+the dictionary.
+
+Such nodes are either leaf nodes or internal nodes.
+A leaf node a is node that has both lc and rc equal to NULL.
+Internal nodes always have both lc and rc not NULL*/
 struct lbst_node {
     int key;
     int data;

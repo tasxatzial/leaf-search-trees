@@ -21,6 +21,8 @@ lbst_T lbst_create();
 
 void lbst_delete_tree(lbst_T root);
 void lbst_range_query(lbst_T root, int first, int last);
-void lbst_print(lbst_T root, int is_root);
+
+/* Prints the dictionary. Sorting is based on key relationship < */
+void lbst_print(lbst_T root);
 
 #endif
