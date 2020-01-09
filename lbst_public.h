@@ -6,14 +6,22 @@
 #include <stdio.h>
 
 typedef void* lbst_T;
-
+typedef void* lbst_T_pair;
 
 /* Inserts a new (key, data) into the dictionary. If key is already in the
 dictionary, its data is updated */
 void lbst_insert(lbst_T root, int key, int data);
 
 void lbst_delete(lbst_T root, int key);
-int lbst_lookup(lbst_T root, int key);
+
+
+/* Finds a key in the dictionary.
+
+If key is found, return value is 1 and the specified data pointer provides
+access to key data.
+If key is not found, return value is 0 and the specified data pointer should
+be ignored. */
+int lbst_lookup(lbst_T root, int key, int *data);
 
 /* Returns 1 if dictionary has no (key, data) pairs, 0 otherwise */
 int lbst_is_empty(lbst_T root);

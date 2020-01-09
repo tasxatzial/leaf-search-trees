@@ -118,7 +118,30 @@ void lbst_delete(lbst_T root, int key) {
 }
 
 /* Description: See lbst_public.h */
-int lbst_lookup(lbst_T root, int key) {
+int lbst_lookup(lbst_T root, int key, int *data) {
+    struct lbst *root_private;
+    struct lbst_node *ptr, *prev;
+
+    root_private = root;
+    if (root_private == NULL) {
+        return 0;
+    }
+
+    ptr = root_private->head;
+    prev = NULL;
+    while(ptr != NULL) {
+        prev = ptr;
+        if (key <= ptr->key) {
+            ptr = ptr->lc;
+        }
+        else {
+            ptr = ptr->rc;
+        }
+    }
+    if (prev != NULL && prev->key == key) {
+        *data = prev->data;
+        return 1;
+    }
 
     return 0;
 }
