@@ -20,5 +20,6 @@ int main() {
         lbst_insert(root, key, data);
         lbst_print(root);
     }
+    lbst_delete_dict(root);
     return 0;
 }

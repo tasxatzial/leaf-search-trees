@@ -19,7 +19,9 @@ int lbst_is_empty(lbst_T root);
 type (int, int). Key should be unique. */
 lbst_T lbst_create();
 
-void lbst_delete_tree(lbst_T root);
+/* Deletes dictionary and frees allocated memory */
+void lbst_delete_dict(lbst_T root);
+
 void lbst_range_query(lbst_T root, int first, int last);
 
 /* Prints the dictionary. Sorting is based on key relationship < */

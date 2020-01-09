@@ -6,6 +6,9 @@ Declarations are in lbst.h and lbst_public.h */
 #include <stdlib.h>
 #include "lbst.h"
 
+static void lbst_delete_root(struct lbst *root);
+static void lbst_delete_nodes(struct lbst_node *node);
+
 /* Description: See lbst_public.h */
 void lbst_insert(lbst_T root, int key, int data) {
     struct lbst *root_private = root;
@@ -134,8 +137,35 @@ lbst_T lbst_create() {
     return (lbst_T) root_private;
 }
 
-void lbst_delete_tree(lbst_T root) {
-    
+/* Description: See lbst_public.h */
+void lbst_delete_dict(lbst_T root) {
+    struct lbst *root_private;
+
+    root_private = root;
+    if (root_private == NULL) {
+        return;
+    }
+
+    lbst_delete_nodes(root_private->head);
+    lbst_delete_root(root_private);
+}
+
+/* Frees memory allocated for the root node of the dictionary */
+static void lbst_delete_root(struct lbst *root) {
+    if (root == NULL) {
+        return;
+    }
+    free(root);
+}
+
+/* Frees memory allocated for all (key, data) nodes of the dictionary */
+static void lbst_delete_nodes(struct lbst_node *node) {
+    if (node == NULL) {
+        return;
+    }
+    lbst_delete_nodes(node->lc);
+    lbst_delete_nodes(node->rc);
+    free(node);
 }
 
 void lbst_range_query(lbst_T root, int first, int last) {
@@ -205,6 +235,6 @@ void lbst_print(lbst_T root) {
         printf("<%d, %d> ", prev->key, prev->data);
         prev = prev->next;
     }
-    
+
     printf("\n");
 }
