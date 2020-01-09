@@ -21,6 +21,7 @@ int main() {
         lbst_insert(root, key, data);
         lbst_print(root);
     }
+    printf("Full dictionary tree (preorder traversal):\n");
     lbst_print_tree(root);
     lbst_delete_dict(root);
     return 0;

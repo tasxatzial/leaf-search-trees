@@ -125,7 +125,15 @@ int lbst_lookup(lbst_T root, int key) {
 
 /* Description: See lbst_public.h */
 int lbst_is_empty(lbst_T root) {
+    struct lbst *root_private;
 
+    root_private = root;
+    if (root_private == NULL) {
+        return 1;
+    }
+    if (root_private->head == NULL) {
+        return 1;
+    }
     return 0;
 }
 

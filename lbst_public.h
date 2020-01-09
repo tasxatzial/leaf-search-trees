@@ -14,6 +14,8 @@ void lbst_insert(lbst_T root, int key, int data);
 
 void lbst_delete(lbst_T root, int key);
 int lbst_lookup(lbst_T root, int key);
+
+/* Returns 1 if dictionary has no (key, data) pairs, 0 otherwise */
 int lbst_is_empty(lbst_T root);
 
 /* Creates and returns an empty dictionary. Its (key, data) pairs have
