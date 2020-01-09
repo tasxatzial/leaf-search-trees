@@ -18,7 +18,6 @@ int main() {
         data = rand() % 20;
         printf("Inserting (%d,%d)\n", key, data);
         lbst_insert(root, key, data);
-        lbst_print(root);
     }
     lbst_delete_dict(root);
     return 0;

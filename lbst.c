@@ -6,6 +6,8 @@ Declarations are in lbst.h and lbst_public.h */
 #include <stdlib.h>
 #include "lbst.h"
 
+static void lbst_print_tree(struct lbst *root);
+static void lbst_print_nodes(struct lbst_node *node);
 static void lbst_delete_root(struct lbst *root);
 static void lbst_delete_nodes(struct lbst_node *node);
 
@@ -145,7 +147,6 @@ void lbst_delete_dict(lbst_T root) {
     if (root_private == NULL) {
         return;
     }
-
     lbst_delete_nodes(root_private->head);
     lbst_delete_root(root_private);
 }
@@ -172,33 +173,19 @@ void lbst_range_query(lbst_T root, int first, int last) {
 
 }
 
-/* Prints the dictionary lbst_T (preorder traversal).
-
-is_root values:
-Non 0: when root argument is the actual root of the dictionary.
-0: when root argument is an internal node (set only for recursive calls) */
-static void lbst_print_tree(lbst_T root, int is_root) {
-    struct lbst *root_private;
-    struct lbst_node *node;
-
-    root_private = root;
-    if (root_private == NULL) {
-        return ;
-    }
-
-    if (is_root == 0) {
-        node = root;
-        if (node == NULL) {
-            return;
-        }
-    }
-    else if (root_private->head != NULL) {
-        node = root_private->head;
-    }
-    else {
+/* Prints the full tree structure of the dictionary (preorder traversal) */
+static void lbst_print_tree(struct lbst *root) {
+    if (root == NULL) {
         return;
     }
-    
+    lbst_print_nodes(root->head);
+}
+
+/* Description: Same as lbst_print_tree */
+static void lbst_print_nodes(struct lbst_node *node) {
+    if (node == NULL) {
+        return;
+    }
     if (node->next != NULL) {
         printf("node: <%d, %d> -- ", node->key, node->data);
         printf("next node: <%d, %d>\n", node->next->key, node->next->data);
@@ -207,8 +194,8 @@ static void lbst_print_tree(lbst_T root, int is_root) {
         printf("node: <%d, %d>\n", node->key, node->data);
     }
 
-    lbst_print_tree(node->lc, 0);
-    lbst_print_tree(node->rc, 0);
+    lbst_print_nodes(node->lc);
+    lbst_print_nodes(node->rc);
 }
 
 /* Description: See lbst_public.h */
