@@ -9,7 +9,7 @@ Description: Implementation of a dictionary abstract data type.
 #include "lbst.h"
 
 void lbst_insert(lbst_T root, int key, int data) {
-    
+
 }
 
 void lbst_delete(lbst_T root, int key) {
@@ -27,8 +27,12 @@ int lbst_is_empty(lbst_T root) {
 }
 
 lbst_T lbst_create() {
-    
-    return NULL;
+    struct lbst *root_private;
+
+    root_private = malloc(sizeof(struct lbst));
+    root_private->head = NULL;
+
+    return (lbst_T) root_private;
 }
 
 void lbst_delete_tree(lbst_T root) {
