@@ -28,11 +28,11 @@ static void lbst_print_nodes(struct lbst_node *node) {
         return;
     }
     if (node->next != NULL) {
-        printf("node: <%d, %d> -- ", node->key, node->data);
-        printf("next node: <%d, %d>\n", node->next->key, node->next->data);
+        printf("<%d,%d> -- ", node->key, node->data);
+        printf("next: <%d,%d>\n", node->next->key, node->next->data);
     }
     else {
-        printf("node: <%d, %d>\n", node->key, node->data);
+        printf("<%d,%d>\n", node->key, node->data);
     }
     lbst_print_nodes(node->lc);
     lbst_print_nodes(node->rc);

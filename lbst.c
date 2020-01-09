@@ -200,8 +200,36 @@ static void lbst_delete_nodes(struct lbst_node *node) {
     free(node);
 }
 
+/* Description: See lbst_public.h */
 void lbst_range_query(lbst_T root, int first, int last) {
+    struct lbst *root_private;
+    struct lbst_node *ptr, *prev;
 
+    root_private = root;
+    if (root_private == NULL) {
+        return;
+    }
+
+    ptr = root_private->head;
+    prev = NULL;
+    while(ptr != NULL) {
+        prev = ptr;
+        if (ptr->key >= first) {
+            ptr = ptr->lc;
+        }
+        else {
+            ptr = ptr->rc;
+        }
+    }
+    if (prev != NULL && prev->key >= first && prev->key <= last) {
+        printf("<%d,%d> ", prev->key, prev->data);
+    }
+    prev = prev->next;
+    while (prev != NULL && prev->key <= last) {
+        printf("<%d,%d> ", prev->key, prev->data);
+        prev = prev->next;
+    }
+    printf("\n");
 }
 
 /* Description: See lbst_public.h */
@@ -225,7 +253,7 @@ void lbst_print(lbst_T root) {
     /* Use the next pointers to traverse the nodes
     that start from the leftmost leaf to the rightmost leaf */
     while(prev != NULL) {
-        printf("<%d, %d> ", prev->key, prev->data);
+        printf("<%d,%d> ", prev->key, prev->data);
         prev = prev->next;
     }
 

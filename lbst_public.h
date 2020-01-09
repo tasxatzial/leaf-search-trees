@@ -33,6 +33,7 @@ lbst_T lbst_create();
 /* Deletes dictionary and frees allocated memory */
 void lbst_delete_dict(lbst_T root);
 
+/* Prints (key, data) that satisfy first <= key <= last */
 void lbst_range_query(lbst_T root, int first, int last);
 
 /* Prints the dictionary. Sorting is based on key relationship < */

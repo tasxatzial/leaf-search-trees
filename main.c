@@ -20,7 +20,7 @@ int main() {
     for (i = 0; i < 10; i++) {
         key = rand() % 15;
         data = rand() % 15;
-        printf("Inserting (%d,%d)\n", key, data);
+        printf("Insert (%d,%d):\t", key, data);
 
         /* insert random (key, data) */
         lbst_insert(root, key, data);
@@ -46,8 +46,12 @@ int main() {
         }
     }
     
+    /* lookup keys in [a, b] */
+    printf("Nodes with keys from 5 to 7: ");
+    lbst_range_query(root, 5, 7);
+
     /* delete dictionary and free memory */
     lbst_delete_dict(root);
-    
+
     return 0;
 }
