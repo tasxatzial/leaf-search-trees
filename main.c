@@ -17,24 +17,26 @@ int main() {
     srand(time(NULL));
 
     /* insert 10 random (key, data) */
+    printf("----------Insert-----------------------------------\n");
     for (i = 0; i < 10; i++) {
         key = rand() % 15;
-        data = rand() % 15;
-        printf("Insert (%d,%d):\t", key, data);
+        data = rand() % 10;
+        printf("(%d,%d):\t", key, data);
         lbst_insert(root, key, data);
 
         /* print dictionary after each insertion */
         lbst_print(root);
     }
 
-    /* print full tree structure */
-    printf("Full dictionary tree (preorder traversal):\n");
+    /* print full tree */
+    printf("----------Print tree (preorder traversal)----------\n");
     lbst_print_tree(root);
 
-    /* lookup 3 random (key, data) */
-    for (i = 0; i < 3; i++) {
+    /* lookup random (key, data) */
+    printf("----------Lookup-----------------------------------\n");
+    for (i = 0; i < 5; i++) {
         key = rand() % 15;
-        printf("Lookup key %d -> ", key);
+        printf("%d -> ", key);
         found = lbst_lookup(root, key, &data);
         if (found) {
             printf("Data: %d\n", data);
@@ -45,13 +47,14 @@ int main() {
     }
     
     /* lookup keys in [a, b] */
-    printf("Nodes with keys from 5 to 7: ");
-    lbst_range_query(root, 5, 7);
+    printf("----------Range Query [5,8]------------------------\n");
+    lbst_range_query(root, 5, 8);
 
     /* delete random keys */
+    printf("----------Delete-----------------------------------\n");
     for (i = 0; i < 20; i++) {
         key = rand() % 15;
-        printf("Delete key %d:\t", key);
+        printf("%d:\t", key);
         lbst_delete(root, key);
         lbst_print(root);
     }

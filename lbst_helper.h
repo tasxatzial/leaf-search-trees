@@ -1,4 +1,5 @@
-/* An abstract data type for storing dictionaries */
+/* An abstract data type for storing/manipulating dictionaries of
+integer (key, data) pairs */
 
 #ifndef _LBST_HELPER_H_
 #define _LBST_HELPER_H_

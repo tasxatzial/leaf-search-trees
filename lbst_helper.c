@@ -1,4 +1,5 @@
-/* An abstract data type for storing dictionaries.
+/* An abstract data type for storing/manipulating dictionaries of
+integer (key, data) pairs.
 
 Declarations are in lbst.h, lbst_public.h, lbst_helper.h */
 
