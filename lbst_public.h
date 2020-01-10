@@ -12,6 +12,7 @@ typedef void* lbst_T_pair;
 dictionary, its data is updated */
 void lbst_insert(lbst_T root, int key, int data);
 
+/* Deletes key from the dictionary */
 void lbst_delete(lbst_T root, int key);
 
 
@@ -36,7 +37,7 @@ void lbst_delete_dict(lbst_T root);
 /* Prints (key, data) that satisfy first <= key <= last */
 void lbst_range_query(lbst_T root, int first, int last);
 
-/* Prints the dictionary. Sorting is based on key relationship < */
+/* Prints the dictionary. (key, data) pairs are sorted by key value */
 void lbst_print(lbst_T root);
 
 #endif

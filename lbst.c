@@ -35,12 +35,11 @@ void lbst_insert(lbst_T root, int key, int data) {
         return;
     }
 
-    /* traverse the tree based on the key and find a leaf that will be
-    used as parent node of the new nodes. Also remember the parent node
-    of that leaf (grparent) */
+    /* traverse the tree and find a leaf that should be
+    used as parent node of the new nodes */
     ptr = root_private->head;
     parent = NULL;
-    grparent = NULL;
+    grparent = NULL; /* parent node of parent */
     while(ptr != NULL) {
         grparent = parent;
         parent = ptr;
@@ -113,8 +112,107 @@ void lbst_insert(lbst_T root, int key, int data) {
     return;
 }
 
+/* Description: See lbst_public.h */
 void lbst_delete(lbst_T root, int key) {
+    struct lbst *root_private;
+    struct lbst_node *ptr, *ptr2, *child, *parent, *grparent, *last_right_child;
+
+    root_private = root;
+    if (root_private == NULL) {
+        return;
+    }
+
+    /* traverse the tree based on the key and find the leaf node that
+    has the key */
+    ptr = root_private->head;
+    last_right_child = NULL; /* last right child while traversing tree */
+    child = NULL; /* this node should have the key */
+    parent = NULL; /* parent node of child */
+    grparent = NULL; /* parent node of parent node */
+    while(ptr != NULL) {
+        grparent = parent;
+        parent = child;
+        child = ptr;
+        if (parent != NULL && parent->rc == child) {
+            last_right_child = parent;
+        }
+        if (key <= ptr->key) {
+            ptr = ptr->lc;
+        }
+        else {
+            ptr = ptr->rc;
+        }
+    }
+
+    /* nothing to do: key does not exist in the dictionary */
+    if (child == NULL || child->key != key) {
+        return;
+    }
+
+    /* key was found in a leaf but parent is NULL: root node has the key */
+    if (parent == NULL) {
+        child->next = NULL;
+        child->lc = NULL;
+        child->rc = NULL;
+        root_private->head = NULL;
+        free(child);
+        return;
+    }
+
+    /* start from from the left child of last_right_node and go to
+    rightmost node: Connect it to the next node of child since child
+    will be deleted */
+    if (last_right_child != NULL) {
+        ptr = NULL;
+        ptr2 = last_right_child->lc;
+        while (ptr2 != NULL) {
+            ptr = ptr2;
+            ptr2 = ptr2->rc;
+        }
+        ptr->next = child->next;
+    }
     
+    /* if grparent of child is NULL, the parent node of child is
+    the root node of the tree. But both parent and child will be deleted
+    therefore root node needs to change */
+    if (grparent == NULL) {
+        if (parent->rc == child) {
+            root_private->head = parent->lc;
+        }
+        else {
+            root_private->head = parent->rc;
+        }
+    }
+
+    /* else connect the grparent node of child to the other child
+    of its parent node */
+    else {
+        if (parent->rc == child) {
+            ptr = parent->lc;
+        }
+        else {
+            ptr = parent->rc;
+        }
+        if (grparent->lc == parent) {
+            grparent->lc = ptr;
+        }
+        else {
+            grparent->rc = ptr;
+        }
+    }
+
+    /* free memory occupied by child and parent */
+    child->next = NULL;
+    child->lc = NULL;
+    child->rc = NULL;
+    free(child);
+    child = NULL;
+
+    parent->next = NULL;
+    parent->lc = NULL;
+    parent->rc = NULL;
+    free(parent);
+    parent = NULL;
 }
 
 /* Description: See lbst_public.h */

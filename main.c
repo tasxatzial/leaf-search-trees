@@ -1,6 +1,6 @@
 /* Test file for the dictionary abstract data type.
 
-Uses functions from lbst_public.h ,lbst_helper.h */
+Uses functions from lbst_public.h, lbst_helper.h */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,13 +16,11 @@ int main() {
     root = lbst_create();
     srand(time(NULL));
 
-    
+    /* insert 10 random (key, data) */
     for (i = 0; i < 10; i++) {
         key = rand() % 15;
         data = rand() % 15;
         printf("Insert (%d,%d):\t", key, data);
-
-        /* insert random (key, data) */
         lbst_insert(root, key, data);
 
         /* print dictionary after each insertion */
@@ -49,6 +47,14 @@ int main() {
     /* lookup keys in [a, b] */
     printf("Nodes with keys from 5 to 7: ");
     lbst_range_query(root, 5, 7);
+
+    /* delete random keys */
+    for (i = 0; i < 20; i++) {
+        key = rand() % 15;
+        printf("Delete key %d:\t", key);
+        lbst_delete(root, key);
+        lbst_print(root);
+    }
 
     /* delete dictionary and free memory */
     lbst_delete_dict(root);
