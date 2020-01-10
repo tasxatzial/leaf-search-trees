@@ -31,6 +31,9 @@ void lbst_insert(lbst_T root, int key, int data) {
         }
         ptr->key = key;
         ptr->data = data;
+        ptr->next = NULL;
+        ptr->lc = NULL;
+        ptr->rc = NULL;
         root_private->head = ptr;
         return;
     }
