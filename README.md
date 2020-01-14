@@ -2,7 +2,7 @@
 
 Library for storing and manipulating dictionaries, that is collections of (key, value) pairs.
 
-Internally the dictionary is stored as a leaf-oriented [binary search tree](https://en.wikipedia.org/wiki/Binary_search_tree) structure.
+Internally the dictionary is stored as a leaf-oriented [binary search tree](https://en.wikipedia.org/wiki/Binary_search_tree) structure. For more details on the implementation see [lbst.pdf](lbst.pdf)
 
 The following functions are implemented:
 
