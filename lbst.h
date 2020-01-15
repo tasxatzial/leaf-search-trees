@@ -5,7 +5,6 @@ integer (key, data) pairs */
 #define _LBST_H_
 
 #include <stdio.h>
-#include "lbst_public.h"
 
 
 /* A special node for the root node of the dictionary.
