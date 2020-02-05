@@ -1,6 +1,4 @@
-/* Test file for the dictionary abstract data type.
-
-Uses functions from lbst_public.h, lbst_helper.h */
+/* Test file for the dictionary library */
 
 #include <stdio.h>
 #include <stdlib.h>

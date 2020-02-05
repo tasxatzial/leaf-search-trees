@@ -1,7 +1,4 @@
-/* An abstract data type for storing/manipulating dictionaries of
-integer (key, data) pairs.
-
-Declarations are in lbst.h, lbst_public.h */
+/* A library for creating and using dictionaries of integer (key, data) pairs */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +9,10 @@ static void lbst_delete_root(struct lbst *root);
 static void lbst_delete_nodes(struct lbst_node *node);
 
 
-/* Description: See lbst_public.h */
+/* Inserts a new (key, data) into the dictionary. If key is already in the
+dictionary, its data is updated.
+
+Time complexity: O(h) */
 void lbst_insert(lbst_T root, int key, int data) {
     struct lbst *root_private = root;
     struct lbst_node *ptr, *n1, *n2, *parent, *grparent;
@@ -116,7 +116,10 @@ void lbst_insert(lbst_T root, int key, int data) {
     return;
 }
 
-/* Description: See lbst_public.h */
+
+/* Deletes a key from the dictionary.
+
+Time complexity: O(h) */
 void lbst_delete(lbst_T root, int key) {
     struct lbst *root_private;
     struct lbst_node *ptr, *ptr2, *child, *parent, *grparent, *last_right_child;
@@ -219,7 +222,15 @@ void lbst_delete(lbst_T root, int key) {
     parent = NULL;
 }
 
-/* Description: See lbst_public.h */
+
+/* Finds a key in the dictionary.
+
+If key is found, return value is 1 and the specified data pointer provides
+access to key data.
+If key is not found, return value is 0 and the specified data pointer should
+be ignored.
+
+Time complexity: O(h) */
 int lbst_lookup(lbst_T root, int key, int *data) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
@@ -248,7 +259,8 @@ int lbst_lookup(lbst_T root, int key, int *data) {
     return 0;
 }
 
-/* Description: See lbst_public.h */
+
+/* Returns 1 if dictionary has no (key, data) pairs, 0 otherwise */
 int lbst_is_empty(lbst_T root) {
     struct lbst *root_private;
 
@@ -262,7 +274,9 @@ int lbst_is_empty(lbst_T root) {
     return 0;
 }
 
-/* Description: See lbst_public.h */
+
+/* Creates and returns an empty dictionary. Its (key, data) pairs have
+type (int, int). Key should be unique. */
 lbst_T lbst_create() {
     struct lbst *root_private;
 
@@ -272,7 +286,8 @@ lbst_T lbst_create() {
     return (lbst_T) root_private;
 }
 
-/* Description: See lbst_public.h */
+
+/* Deletes the dictionary and frees allocated memory */
 void lbst_delete_dict(lbst_T root) {
     struct lbst *root_private;
 
@@ -284,6 +299,7 @@ void lbst_delete_dict(lbst_T root) {
     lbst_delete_root(root_private);
 }
 
+
 /* Frees memory allocated for the root node of the dictionary */
 static void lbst_delete_root(struct lbst *root) {
     if (root == NULL) {
@@ -291,6 +307,7 @@ static void lbst_delete_root(struct lbst *root) {
     }
     free(root);
 }
+
 
 /* Frees memory allocated for all (key, data) nodes of the dictionary */
 static void lbst_delete_nodes(struct lbst_node *node) {
@@ -302,7 +319,10 @@ static void lbst_delete_nodes(struct lbst_node *node) {
     free(node);
 }
 
-/* Description: See lbst_public.h */
+
+/* Prints (key, data) that satisfy first <= key <= last.
+
+Time complexity: O(h + last - first) */
 void lbst_range_query(lbst_T root, int first, int last) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
@@ -334,7 +354,10 @@ void lbst_range_query(lbst_T root, int first, int last) {
     printf("\n");
 }
 
-/* Description: See lbst_public.h */
+
+/* Prints the dictionary. (key, data) pairs are sorted by key value.
+
+Time complexity: O(h + #keys) */
 void lbst_print(lbst_T root) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;

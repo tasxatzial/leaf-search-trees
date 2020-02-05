@@ -1,7 +1,4 @@
-/* An abstract data type for storing/manipulating dictionaries of
-integer (key, data) pairs.
-
-Declarations are in lbst.h, lbst_public.h, lbst_helper.h */
+/* A library for creating and using dictionaries of integer (key, data) pairs */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +9,7 @@ Declarations are in lbst.h, lbst_public.h, lbst_helper.h */
 static void lbst_print_nodes(struct lbst_node *node);
 
 
-/* Description: See lbst_helper.h */
+/* Prints the full tree structure of the dictionary (preorder traversal) */
 void lbst_print_tree(lbst_T root) {
     struct lbst *root_private;
 
@@ -22,6 +19,7 @@ void lbst_print_tree(lbst_T root) {
     }
     lbst_print_nodes(root_private->head);
 }
+
 
 /* Prints the full tree structure of the dictionary (preorder traversal) */
 static void lbst_print_nodes(struct lbst_node *node) {
