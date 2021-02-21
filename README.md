@@ -1,4 +1,4 @@
-# Description
+# lbst
 
 Library for creating and using dictionaries, that is, collections of (key, value) pairs.
 
@@ -14,13 +14,11 @@ The following functions are provided:
 * lbst_delete_dict(dictionary): Delete dictionary and free memory
 * lbst_print_tree(dictionary): Print the full dictionary tree structure
 
-## Language
-
-C.
-
 ## Implementation
 
-Internally the dictionary is stored as a leaf-oriented binary search tree structure. Operations like 'insert', 'delete', 'lookup' should run in O(h) time whereas 'range_query' should run in O(h + last - first) time. For more details about the implementation see [lbst.pdf](lbst.pdf) (in greek).
+Internally the dictionary is stored as a leaf-oriented binary search tree structure. Operations like 'insert', 'delete', 'lookup'
+run in O(h) time whereas 'range_query' runs in O(h + last - first) time. For more details about the implementation
+see [lbst.pdf](lbst.pdf) (in greek).
 
 Note: Currently only integer keys/values are supported.
 
@@ -28,24 +26,24 @@ Note: Currently only integer keys/values are supported.
 
 Use the provided Makefile:
 
-### Building the library
-
 ```bash
 make lbst.o
 ```
 
 Note: The above command builds a module that contains only the functions declared in lbst_public.h. It does not
-include the function lbst_print_tree which is related to the internal dictionary representation and is not necessary for using the library.
+include the function lbst_print_tree which is related to the internal dictionary representation.
 
-### Building the test files
+## Tests
 
-Using the library is demonstrated in [main.c](main.c). Build the tests with:
+Using the library is demonstrated in [main.c](main.c).
+
+Build:
 
 ```bash
 make lbst_test
 ```
 
-and run with:
+Run:
 
 ```bash
 ./lbst_test
