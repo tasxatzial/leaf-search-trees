@@ -18,7 +18,7 @@ The following functions are provided:
 
 Internally the dictionary is stored as a leaf-oriented binary search tree structure. Operations like 'insert', 'delete', 'lookup'
 run in O(h) time whereas 'range_query' runs in O(h + last - first) time. For more details about the implementation
-see [lbst.pdf](lbst.pdf) (in greek).
+see [lbst.pdf](docs/lbst.pdf) (in greek).
 
 Note: Currently only integer keys/values are supported.
 
@@ -35,7 +35,7 @@ include the function lbst_print_tree which is related to the internal dictionary
 
 ## Tests
 
-Using the library is demonstrated in [main.c](main.c).
+Using the library is demonstrated in [main.c](src/main.c).
 
 Build:
 
