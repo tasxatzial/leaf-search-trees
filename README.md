@@ -17,8 +17,8 @@ The following functions are provided:
 ## Implementation
 
 Internally the dictionary is stored as a leaf-oriented binary search tree structure. Operations like 'insert', 'delete', 'lookup'
-run in O(h) time whereas 'range_query' runs in O(h + last - first) time. For more details about the implementation
-see [lbst.pdf](docs/lbst.pdf) (in greek).
+run in O(h) time whereas 'range_query' runs in O(h + last - first) time. More details about the implementation
+can be found in [lbst.md](docs/lbst.md) (english) and [lbst.pdf](docs/lbst.pdf) (greek).
 
 Note: Currently only integer keys/values are supported.
 
