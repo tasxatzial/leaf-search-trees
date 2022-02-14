@@ -14,11 +14,9 @@ The following functions are provided:
 
 ## Implementation
 
-Internally the dictionary is stored as a leaf-oriented binary search tree structure. Operations like 'insert', 'delete', 'lookup'
-run in O(h) time whereas 'range_query' runs in O(h + last - first) time. More details about the implementation
-can be found in [lbst.md](docs/lbst.md) (english) and [lbst.pdf](docs/lbst.pdf) (greek).
+Internally the dictionary is stored as a leaf-oriented binary search tree structure. Time complexity of operations 'insert', 'delete', 'lookup' is O(tree_height) whereas 'range_query' has a complexity of O(tree_height + last - first). More details about 'insert' and 'delete' can be found in [lbst.md](docs/lbst.md) (english) and [lbst.pdf](docs/lbst.pdf) (greek).
 
-**Note**: Currently only integer keys/values are supported.
+**Note**: Currently only integer keys/values are supported. Pairs are sorted by keys (ascending).
 
 ## Compile
 
@@ -28,7 +26,7 @@ Use the provided Makefile:
 make lbst.o
 ```
 
-The above command builds a module that contains only the functions declared in lbst.h.
+The above command builds a module that contains the functions declared in lbst.h only.
 
 ## Demo
 
