@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lbst.h"
-#include "lbst_public.h"
+#include "lbst_private.h"
 
 static void lbst_delete_root(struct lbst *root);
 static void lbst_delete_nodes(struct lbst_node *node);

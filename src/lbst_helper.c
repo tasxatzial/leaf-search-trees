@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "lbst.h"
 #include "lbst_helper.h"
-#include "lbst_public.h"
+#include "lbst_private.h"
 
 static void lbst_print_nodes(struct lbst_node *node);
 

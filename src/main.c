@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "lbst_public.h"
+#include "lbst.h"
 #include "lbst_helper.h"
 
 int main() {
