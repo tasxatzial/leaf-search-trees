@@ -18,6 +18,10 @@ Internally the dictionary is stored as a leaf-oriented binary search tree struct
 
 **Note**: Currently only integer keys/values are supported. Pairs are sorted by keys (ascending).
 
+## Profiling
+
+The program has been tested for memory leaks with [valgrind](https://valgrind.org/) and [AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer).
+
 ## Compile
 
 Use the provided Makefile:
