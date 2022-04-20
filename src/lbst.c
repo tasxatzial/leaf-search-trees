@@ -5,7 +5,6 @@
 #include "lbst.h"
 #include "lbst_private.h"
 
-static void lbst_delete_root(struct lbst *root);
 static void lbst_delete_nodes(struct lbst_node *node);
 
 
@@ -213,13 +212,11 @@ void lbst_delete(lbst_T root, int key) {
     child->lc = NULL;
     child->rc = NULL;
     free(child);
-    child = NULL;
 
     parent->next = NULL;
     parent->lc = NULL;
     parent->rc = NULL;
     free(parent);
-    parent = NULL;
 }
 
 
@@ -296,16 +293,7 @@ void lbst_delete_dict(lbst_T root) {
         return;
     }
     lbst_delete_nodes(root_private->head);
-    lbst_delete_root(root_private);
-}
-
-
-/* Frees memory allocated for the root node of the dictionary */
-static void lbst_delete_root(struct lbst *root) {
-    if (root == NULL) {
-        return;
-    }
-    free(root);
+    free(root_private);
 }
 
 
@@ -326,6 +314,7 @@ Time complexity: O(h + last - first) */
 void lbst_range_query(lbst_T root, int first, int last) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
+    int i = 0;
 
     root_private = root;
     if (root_private == NULL) {
@@ -348,10 +337,13 @@ void lbst_range_query(lbst_T root, int first, int last) {
     }
     prev = prev->next;
     while (prev != NULL && prev->key <= last) {
+        i++;
         printf("<%d,%d> ", prev->key, prev->data);
         prev = prev->next;
     }
-    printf("\n");
+    if (i != 0) {
+        printf("\n");
+    }
 }
 
 
@@ -361,6 +353,7 @@ Time complexity: O(h + #keys) */
 void lbst_print(lbst_T root) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
+    int i = 0;
 
     root_private = root;
     if (root_private == NULL) {
@@ -378,9 +371,12 @@ void lbst_print(lbst_T root) {
     /* Use the next pointers to traverse the nodes
     that start from the leftmost leaf to the rightmost leaf */
     while(prev != NULL) {
+        i++;
         printf("<%d,%d> ", prev->key, prev->data);
         prev = prev->next;
     }
 
-    printf("\n");
+    if (i != 0) {
+        printf("\n");
+    }
 }
