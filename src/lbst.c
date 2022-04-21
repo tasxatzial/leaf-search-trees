@@ -353,7 +353,6 @@ void lbst_range_query(lbst_T root, int first, int last) {
         printf("<%d,%d> ", prev->key, prev->data);
         prev = prev->next;
     }
-    printf("\n");
 }
 
 
@@ -366,7 +365,6 @@ void lbst_print(lbst_T root) {
 
     root_private = root;
     if (root_private == NULL) {
-        printf("empty\n");
         return;
     }
 
@@ -384,5 +382,4 @@ void lbst_print(lbst_T root) {
         printf("<%d,%d> ", prev->key, prev->data);
         prev = prev->next;
     }
-    printf("\n");
 }
