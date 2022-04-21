@@ -37,12 +37,18 @@ int lbst_is_empty(lbst_T root);
 
 
 /* Creates and returns an empty dictionary. Its (key, data) pairs have
-type (int, int). Key should be unique. */
+type (int, int). */
 lbst_T lbst_create();
 
 
-/* Deletes the dictionary and frees allocated memory */
-void lbst_delete_dict(lbst_T root);
+/* Clears the dictionary. The function lbst_is_empty returns 1 after
+calling this one. */
+void lbst_clear(lbst_T root);
+
+
+/* Clears the dictionary. No other functions should be called after
+calling this one. */
+void lbst_destroy(lbst_T root);
 
 
 /* Prints (key, data) that satisfy first <= key <= last.

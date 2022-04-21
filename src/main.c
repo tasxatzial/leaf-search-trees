@@ -58,21 +58,34 @@ int main() {
     }
 
     /* delete dictionary and free memory */
-    printf("----------Delete All------------------------------\n");
-    lbst_delete_dict(root);
+    printf("---------------------------------------------------\n");
+    printf("Clear the dictionary\n");
+    lbst_clear(root);
 
     /* check if empty */
-    printf("Check if dictionary is empty: ");
-    if (lbst_is_empty(root)) {
-        printf("YES\n");
-    }
-    else {
-        printf("NO (This is an error)\n");
-    }
+    printf("Check if dictionary is empty (should print 1): %d\n", lbst_is_empty(root));
 
-    printf("Printing dictionary: ");
+    /* should print nothing */
+    printf("Print dictionary: ");
     lbst_print(root);
-    printf("\n");
+
+    /* re-use the dictionary */
+    printf("Re-use dictionary. Insert <1,1>\n");
+    lbst_insert(root, 1, 1);
+
+    /* clear dictionary */
+    lbst_clear(root);
+
+    printf("Print dictionary: ");
+    lbst_print(root);
+
+    /* check if empty */
+    printf("Check if dictionary is empty (should print 1): %d\n", lbst_is_empty(root));
+
+    /* destroy the dictionary.
+    We cannot call any other functions after this */
+    printf("Destroy dictionary\n");
+    lbst_destroy(root);
 
     return 0;
 }

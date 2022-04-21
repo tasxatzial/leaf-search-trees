@@ -5,7 +5,7 @@
 #include "lbst.h"
 #include "lbst_private.h"
 
-static void lbst_delete_nodes(struct lbst_node *node);
+static void lbst_delete_descendants(struct lbst_node *node);
 
 
 /* Inserts a new (key, data) into the dictionary. If key is already in the
@@ -190,8 +190,8 @@ void lbst_delete(lbst_T root, int key) {
         }
     }
 
-    /* else connect the grparent node of child to the other child
-    of its parent node */
+    /* else connect the grparent node of child to the sibling of
+    its parent node */
     else {
         if (parent->rc == child) {
             ptr = parent->lc;
@@ -262,18 +262,16 @@ int lbst_is_empty(lbst_T root) {
     struct lbst *root_private;
 
     root_private = root;
-    if (root_private == NULL) {
+    if (root_private == NULL || root_private->head == NULL) {
         return 1;
     }
-    if (root_private->head == NULL) {
-        return 1;
-    }
+
     return 0;
 }
 
 
 /* Creates and returns an empty dictionary. Its (key, data) pairs have
-type (int, int). Key should be unique. */
+type (int, int) */
 lbst_T lbst_create() {
     struct lbst *root_private;
 
@@ -284,26 +282,41 @@ lbst_T lbst_create() {
 }
 
 
-/* Deletes the dictionary and frees allocated memory */
-void lbst_delete_dict(lbst_T root) {
+
+/* Clears the dictionary. The function lbst_is_empty returns 1 after
+calling this one. */
+void lbst_clear(lbst_T root) {
     struct lbst *root_private;
 
     root_private = root;
     if (root_private == NULL) {
         return;
     }
-    lbst_delete_nodes(root_private->head);
+    lbst_delete_descendants(root_private->head);
+    root_private->head = NULL;
+}
+
+
+/* Clears the dictionary. No other functions should be called after
+calling this one. */
+void lbst_destroy(lbst_T root) {
+    struct lbst *root_private;
+
+    root_private = root;
+    if (root_private == NULL) {
+        return;
+    }
     free(root_private);
 }
 
 
-/* Frees memory allocated for all (key, data) nodes of the dictionary */
-static void lbst_delete_nodes(struct lbst_node *node) {
+/* Deletes all descendant nodes of node */
+static void lbst_delete_descendants(struct lbst_node *node) {
     if (node == NULL) {
         return;
     }
-    lbst_delete_nodes(node->lc);
-    lbst_delete_nodes(node->rc);
+    lbst_delete_descendants(node->lc);
+    lbst_delete_descendants(node->rc);
     free(node);
 }
 
@@ -314,7 +327,6 @@ Time complexity: O(h + last - first) */
 void lbst_range_query(lbst_T root, int first, int last) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
-    int i = 0;
 
     root_private = root;
     if (root_private == NULL) {
@@ -337,13 +349,10 @@ void lbst_range_query(lbst_T root, int first, int last) {
     }
     prev = prev->next;
     while (prev != NULL && prev->key <= last) {
-        i++;
         printf("<%d,%d> ", prev->key, prev->data);
         prev = prev->next;
     }
-    if (i != 0) {
-        printf("\n");
-    }
+    printf("\n");
 }
 
 
@@ -353,10 +362,10 @@ Time complexity: O(h + #keys) */
 void lbst_print(lbst_T root) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
-    int i = 0;
 
     root_private = root;
     if (root_private == NULL) {
+        printf("empty\n");
         return;
     }
 
@@ -371,12 +380,8 @@ void lbst_print(lbst_T root) {
     /* Use the next pointers to traverse the nodes
     that start from the leftmost leaf to the rightmost leaf */
     while(prev != NULL) {
-        i++;
         printf("<%d,%d> ", prev->key, prev->data);
         prev = prev->next;
     }
-
-    if (i != 0) {
-        printf("\n");
-    }
+    printf("\n");
 }
