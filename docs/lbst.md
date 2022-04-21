@@ -9,9 +9,9 @@ Leaf-oriented binary search trees are an alternative implementation of the 'dict
 
   * The key of the right child of V is greater than the key of V.
 
-Note that the definition implies that all internal nodes have always two child nodes.
+Note that the definition implies that all internal nodes always have two child nodes.
 
-Also each leaf has a pointer to the next leaf node. An example of a leaf-oriented binary search tree is depicted below.
+Also, each leaf has a pointer to the next leaf node. An example of a leaf-oriented binary search tree is depicted below.
 
 ![alt text](../img/lbst.jpg)
 
@@ -29,7 +29,7 @@ In the example below, key 1 is inserted.
 
 ## Delete a key
 
-1. Find the leaf node V that has the key that will be deleted. Also find the parent node V' of V.
+1. Find the leaf node V that has the key that will be deleted. Also, find the parent node V' of V.
 
 2. Delete both V and V' and connect the parent node of V' to the sibling of V.
 
