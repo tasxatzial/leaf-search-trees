@@ -11,8 +11,10 @@ typedef void* lbst_T;
 /* Inserts a new (key, data) into the dictionary. If key is already in the
 dictionary, its data is updated.
 
+Returns 1 on success, else 0.
+
 Time complexity: O(h) */
-void lbst_insert(lbst_T root, int key, int data);
+int lbst_insert(lbst_T root, int key, int data);
 
 
 /* Deletes a key from the dictionary.
@@ -37,11 +39,13 @@ int lbst_is_empty(lbst_T root);
 
 
 /* Creates and returns an empty dictionary. Its (key, data) pairs have
-type (int, int). */
+type (int, int).
+
+Returns NULL on fail.*/
 lbst_T lbst_create();
 
 
-/* Clears the dictionary. The function lbst_is_empty returns 1 after
+/* Clears the dictionary. The function lbst_is_empty() returns 1 after
 calling this one. */
 void lbst_clear(lbst_T root);
 

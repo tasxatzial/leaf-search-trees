@@ -11,23 +11,23 @@ static void lbst_delete_descendants(struct lbst_node *node);
 /* Inserts a new (key, data) into the dictionary. If key is already in the
 dictionary, its data is updated.
 
+Returns 1 on success, else 0.
+
 Time complexity: O(h) */
-void lbst_insert(lbst_T root, int key, int data) {
+int lbst_insert(lbst_T root, int key, int data) {
     struct lbst *root_private = root;
     struct lbst_node *ptr, *n1, *n2, *parent, *grparent;
 
     /* special case: root has not been initialized using lbst_create() */
     if (root_private == NULL) {
-        printf("Error inserting: NULL root\n");
-        return;
+        return 0;
     }
 
     /* special case: 0 (key, data) nodes */
     if (root_private->head == NULL) {
         ptr = malloc(sizeof(struct lbst_node));
         if (ptr == NULL) {
-            printf("Error inserting: Mem alloc NULL\n");
-            return;
+            return 0;
         }
         ptr->key = key;
         ptr->data = data;
@@ -35,7 +35,7 @@ void lbst_insert(lbst_T root, int key, int data) {
         ptr->lc = NULL;
         ptr->rc = NULL;
         root_private->head = ptr;
-        return;
+        return 1;
     }
 
     /* traverse the tree and find a leaf that should be
@@ -57,25 +57,18 @@ void lbst_insert(lbst_T root, int key, int data) {
     /* update the parent data if the same key was provided */
     if (parent->key == key) {
         parent->data = data;
-        return;
+        return 1;
     }
 
     /* create two new nodes n1, n2 */
     n1 = malloc(sizeof(struct lbst_node));
-    if (n1 == NULL) {
-        printf("Error inserting: Mem alloc NULL\n");
-        return;
+    n2 = malloc(sizeof(struct lbst_node));
+    if (n1 == NULL || n2 == NULL) {
+        return 0;
     }
     n1->rc = NULL;
     n1->lc = NULL;
     n1->next = NULL;
-
-    n2 = malloc(sizeof(struct lbst_node));
-    if (n2 == NULL) {
-        free(n1);
-        printf("Error inserting: Mem alloc NULL\n");
-        return;
-    }
     n2->rc = NULL;
     n2->lc = NULL;
     n2->next = NULL;
@@ -103,16 +96,18 @@ void lbst_insert(lbst_T root, int key, int data) {
         n1->data = data;
     }
     if (grparent != NULL) {
-        if (parent == grparent->lc)
+        if (parent == grparent->lc) {
             grparent->lc = n2;
-        else
+        }
+        else {
             grparent->rc = n2;
+        }
     }
     else {
         root_private->head = n2;
     }
 
-    return;
+    return 1;
 }
 
 
@@ -162,7 +157,6 @@ void lbst_delete(lbst_T root, int key) {
         child->rc = NULL;
         root_private->head = NULL;
         free(child);
-        return;
     }
 
     /* start from from the left child of last_right_node and go to
@@ -271,11 +265,16 @@ int lbst_is_empty(lbst_T root) {
 
 
 /* Creates and returns an empty dictionary. Its (key, data) pairs have
-type (int, int) */
+type (int, int).
+
+Returns NULL on fail. */
 lbst_T lbst_create() {
     struct lbst *root_private;
 
     root_private = malloc(sizeof(struct lbst));
+    if (root_private == NULL) {
+        return NULL;
+    }
     root_private->head = NULL;
 
     return (lbst_T) root_private;
@@ -283,7 +282,7 @@ lbst_T lbst_create() {
 
 
 
-/* Clears the dictionary. The function lbst_is_empty returns 1 after
+/* Clears the dictionary. The function lbst_is_empty() returns 1 after
 calling this one. */
 void lbst_clear(lbst_T root) {
     struct lbst *root_private;
@@ -318,6 +317,8 @@ static void lbst_delete_descendants(struct lbst_node *node) {
     }
     lbst_delete_descendants(node->lc);
     lbst_delete_descendants(node->rc);
+    node->lc = NULL;
+    node->rc = NULL;
     free(node);
 }
 
