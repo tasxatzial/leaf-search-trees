@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "lbst.h"
-#include "lbst_helper.h"
+#include "lbst_private.h"
 
 int main() {
     int i, key, data, found;

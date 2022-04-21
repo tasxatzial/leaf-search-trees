@@ -6,22 +6,15 @@
 #include <stdio.h>
 
 
-/* A special node for the root node of the dictionary.
-Pointers to lbst_T (declared in lbst_public.h) should be
-cast to this struct when they are treated as the root node of
-the dictionary. */
+/* Node for the root node of the dictionary */
 struct lbst {
     struct lbst_node *head;
 };
 
-/* Nodes that store a (key, data) pair.
-Pointers to lbst_T (declared in lbst_public.h) should be cast
-to this struct when they are not treated as the root node of
-the dictionary.
 
-Such nodes are either leaf nodes or internal nodes.
-A leaf node a is node that has both lc and rc equal to NULL.
-Internal nodes always have both lc and rc not NULL*/
+/* Tree nodes (non root) that store a (key, data) pair.
+Leaf nodes have lc and rc equal to NULL.
+Internal nodes have lc and rc not NULL*/
 struct lbst_node {
     int key;
     int data;
@@ -29,5 +22,14 @@ struct lbst_node {
     struct lbst_node *rc;
     struct lbst_node *next;
 };
+
+
+/* Prints the full tree structure of the dictionary (preorder traversal) */
+void lbst_print_tree(struct lbst *root);
+
+
+/* Prints the full tree structure of the subtree (preorder traversal) */
+void lbst_print_subtree(struct lbst_node *node);
+
 
 #endif
