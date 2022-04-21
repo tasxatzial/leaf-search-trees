@@ -58,7 +58,21 @@ int main() {
     }
 
     /* delete dictionary and free memory */
+    printf("----------Delete All------------------------------\n");
     lbst_delete_dict(root);
+
+    /* check if empty */
+    printf("Check if dictionary is empty: ");
+    if (lbst_is_empty(root)) {
+        printf("YES\n");
+    }
+    else {
+        printf("NO (This is an error)\n");
+    }
+
+    printf("Printing dictionary: ");
+    lbst_print(root);
+    printf("\n");
 
     return 0;
 }
