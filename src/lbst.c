@@ -347,11 +347,11 @@ void lbst_range_query(lbst_T root, int first, int last) {
         }
     }
     if (prev != NULL && prev->key >= first && prev->key <= last) {
-        printf("<%d,%d> ", prev->key, prev->data);
+        printf("[%d,%d] ", prev->key, prev->data);
     }
     prev = prev->next;
     while (prev != NULL && prev->key <= last) {
-        printf("<%d,%d> ", prev->key, prev->data);
+        printf("[%d,%d] ", prev->key, prev->data);
         prev = prev->next;
     }
 }
@@ -380,7 +380,7 @@ void lbst_print(lbst_T root) {
     /* Use the next pointers to traverse the nodes
     that start from the leftmost leaf to the rightmost leaf */
     while(prev != NULL) {
-        printf("<%d,%d> ", prev->key, prev->data);
+        printf("[%d,%d] ", prev->key, prev->data);
         prev = prev->next;
     }
 }

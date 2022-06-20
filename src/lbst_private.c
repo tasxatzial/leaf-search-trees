@@ -18,12 +18,12 @@ void lbst_print_subtree(struct lbst_node *node) {
     if (node == NULL) {
         return;
     }
+    printf("[%d,%d]", node->key, node->data);
     if (node->next != NULL) {
-        printf("<%d,%d> -- ", node->key, node->data);
-        printf("next: <%d,%d>\n", node->next->key, node->next->data);
+        printf(" --> [%d,%d]\n", node->next->key, node->next->data);
     }
     else {
-        printf("<%d,%d>\n", node->key, node->data);
+        printf("\n");
     }
     lbst_print_subtree(node->lc);
     lbst_print_subtree(node->rc);
