@@ -1,5 +1,3 @@
-/* A library for creating and using dictionaries of integer (key, data) pairs */
-
 #ifndef _LBST_H_
 #define _LBST_H_
 
@@ -8,38 +6,35 @@
 typedef void* lbst_T;
 
 
-/* Inserts a new (key, data) into the dictionary. If key is already in the
-dictionary, its data is updated.
+/* Inserts a new (key, val) into the dictionary. If key is already in the
+dictionary, its val is updated.
 
 Returns 1 on success, else 0.
 
 Time complexity: O(h) */
-int lbst_insert(lbst_T root, int key, int data);
+int lbst_insert(lbst_T root, char *key, char *val);
 
 
 /* Deletes a key from the dictionary.
 
 Time complexity: O(h) */
-void lbst_delete(lbst_T root, int key);
+void lbst_delete(lbst_T root, char *key);
 
 
-/* Finds a key in the dictionary.
+/* Searches for a key in the dictionary.
 
-If key is found, return value is 1 and the specified data pointer provides
-access to key data.
-If key is not found, return value is 0 and the specified data pointer should
-be ignored.
+If found, it returns the a pointer to its val, else it returns NULL.
 
 Time complexity: O(h) */
-int lbst_lookup(lbst_T root, int key, int *data);
+char *lbst_lookup(lbst_T root, char *key);
 
 
-/* Returns 1 if dictionary has no (key, data) pairs, 0 otherwise */
+/* Returns 1 if dictionary has no keys, 0 otherwise */
 int lbst_is_empty(lbst_T root);
 
 
-/* Creates and returns an empty dictionary. Its (key, data) pairs have
-type (int, int).
+/* Creates and returns an empty dictionary. Its (key, val) pairs have
+type (char *, char *).
 
 Returns NULL on fail.*/
 lbst_T lbst_create();
@@ -55,13 +50,13 @@ calling this one. */
 void lbst_destroy(lbst_T root);
 
 
-/* Prints (key, data) that satisfy first <= key <= last.
+/* Prints (key, val) that satisfy first <= key <= last.
 
 Time complexity: O(h + last - first) */
-void lbst_range_query(lbst_T root, int first, int last);
+void lbst_range_query(lbst_T root, char *first, char *last);
 
 
-/* Prints the dictionary. (key, data) pairs are sorted by key value.
+/* Prints the dictionary. (key, val) pairs are sorted by key.
 
 Time complexity: O(h + #keys) */
 void lbst_print(lbst_T root);

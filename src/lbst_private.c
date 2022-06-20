@@ -1,5 +1,3 @@
-/* A library for creating and using dictionaries of integer (key, data) pairs */
-
 #include <stdio.h>
 #include "lbst_private.h"
 
@@ -18,13 +16,12 @@ void lbst_print_subtree(struct lbst_node *node) {
     if (node == NULL) {
         return;
     }
-    printf("[%d,%d]", node->key, node->data);
+    printf("[%s :: %s]", node->key, node->val);
     if (node->next != NULL) {
-        printf(" --> [%d,%d]\n", node->next->key, node->next->data);
+        printf(" --> [%s :: %s]", node->next->key, node->next->val);
     }
-    else {
-        printf("\n");
-    }
+    printf("\n");
+
     lbst_print_subtree(node->lc);
     lbst_print_subtree(node->rc);
 }

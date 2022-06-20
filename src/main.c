@@ -3,62 +3,113 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <assert.h>
+#include <string.h>
 #include "lbst.h"
 #include "lbst_private.h"
 
+static char** random_strings(char *alphabet, int num_keys, int max_key_len) {
+    char **keys;
+    int i, j, rand_int, alpha_length;
+    
+    assert(alphabet);
+    assert(num_keys >= 0);
+    assert(max_key_len > 0);
+    alpha_length  = strlen(alphabet);
+    assert(alpha_length);
+    keys = malloc(num_keys * sizeof(char *));
+    assert(keys);
+
+    for (i = 0; i < num_keys; i++) {
+
+        /* generate a random length for each key */
+        rand_int = rand() % max_key_len + 1;
+        keys[i] = malloc((rand_int + 1) * sizeof(char));
+
+        /* fill the key with random characters from alphabet */
+        for (j = 0; j < rand_int; j++) {
+            keys[i][j] = alphabet[rand() % alpha_length];
+        }
+        keys[i][j] = '\0';
+    }
+    return keys;
+}
+
 int main() {
-    int i, key, data, found;
+    int i, j;
+    char *val;
+    char **keys, **vals;
     lbst_T root;
 
     /* create dictionary */
     root = lbst_create();
     srand(time(NULL));
 
-    /* insert 10 random (key, data) */
+    keys = random_strings("abc", 10, 3);
+    vals = random_strings("abc", 10, 3);
+
+    /* insert random (key, val) */
     printf("----------Insert-----------------------------------\n");
     for (i = 0; i < 10; i++) {
-        key = rand() % 15;
-        data = rand() % 10;
-        printf("(%d,%d):\t", key, data);
-        lbst_insert(root, key, data);
+        printf("+ [%s :: %s]\n", keys[i], vals[i]);
+        lbst_insert(root, keys[i], vals[i]);
 
         /* print dictionary after each insertion */
         lbst_print(root);
-        printf("\n");
     }
+
+    /* we no longer need the keys, vals */
+    for (i = 0; i < 10; i++) {
+        free(keys[i]);
+        free(vals[i]);
+    }
+    free(keys);
+    free(vals);
 
     /* print full tree */
     printf("----------Print tree (preorder traversal)----------\n");
     lbst_print_tree(root);
 
-    /* lookup random (key, data) */
+    /* lookup random keys */
     printf("----------Lookup-----------------------------------\n");
-    for (i = 0; i < 5; i++) {
-        key = rand() % 15;
-        printf("%d -> ", key);
-        found = lbst_lookup(root, key, &data);
-        if (found) {
-            printf("Data: %d\n", data);
+    keys = random_strings("abc", 10, 3);
+    for (i = 0; i < 10; i++) {
+        j = rand() % 10;
+        printf("%s :: ", keys[j]);
+        val = lbst_lookup(root, keys[j]);
+        if (val) {
+            printf("%s\n", val);
         }
         else {
-            printf("Not found\n");
+            printf("NULL\n");
         }
     }
     
+    /* we no longer need the keys */
+    for (i = 0; i < 10; i++) {
+        free(keys[i]);
+    }
+    free(keys);
+
     /* lookup keys in [a, b] */
-    printf("----------Range Query [5,8]------------------------\n");
-    lbst_range_query(root, 5, 8);
-    printf("\n");
+    printf("----------Range Query [ba to ca]------------------------\n");
+    lbst_range_query(root, "ba", "ca");
 
     /* delete random keys */
     printf("----------Delete-----------------------------------\n");
-    for (i = 0; i < 20; i++) {
-        key = rand() % 15;
-        printf("%d:\t", key);
-        lbst_delete(root, key);
+    keys = random_strings("abc", 10, 3);
+    for (i = 0; i < 10; i++) {
+        j = rand() % 10;
+        printf("- %s\n", keys[j]);
+        lbst_delete(root, keys[j]);
         lbst_print(root);
-        printf("\n");
     }
+
+    /* we no longer need the keys */
+    for (i = 0; i < 10; i++) {
+        free(keys[i]);
+    }
+    free(keys);
 
     /* clear dictionary */
     printf("---------------------------------------------------\n");
@@ -71,15 +122,13 @@ int main() {
     /* should print nothing */
     printf("Print dictionary: ");
     lbst_print(root);
-    printf("\n");
 
     /* re-use dictionary: insert */
-    printf("Re-use dictionary. Insert <1,1>\n");
-    lbst_insert(root, 1, 1);
+    printf("Re-use dictionary. Insert ['nice', 'day']\n");
+    lbst_insert(root, "nice", "day");
 
     printf("Print dictionary: ");
     lbst_print(root);
-    printf("\n");
     
     /* clear dictionary */
     printf("Clear dictionary\n");
@@ -87,7 +136,6 @@ int main() {
 
     printf("Print dictionary: ");
     lbst_print(root);
-    printf("\n");
 
     /* check if empty */
     printf("Check if dictionary is empty (should print 1): %d\n", lbst_is_empty(root));

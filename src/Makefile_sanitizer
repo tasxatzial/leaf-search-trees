@@ -1,4 +1,4 @@
-CFLAGS = -c -ansi -Wall -pedantic
+CFLAGS = -c -Wall -pedantic
 
 lbst_demo: main.o lbst.o lbst_private.o
 	gcc main.o lbst.o lbst_private.o -o lbst_demo -fsanitize=address -static-libasan

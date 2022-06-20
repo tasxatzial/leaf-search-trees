@@ -1,5 +1,3 @@
-/* A library for creating and using dictionaries of integer (key, data) pairs */
-
 #ifndef _LBST_PRIVATE_H_
 #define _LBST_PRIVATE_H_
 
@@ -12,12 +10,12 @@ struct lbst {
 };
 
 
-/* Tree nodes (non root) that store a (key, data) pair.
+/* Tree nodes (non root) that store a (key, val) pair.
 Leaf nodes have lc and rc equal to NULL.
 Internal nodes have lc and rc not NULL*/
 struct lbst_node {
-    int key;
-    int data;
+    char *key;
+    char *val;
     struct lbst_node *lc;
     struct lbst_node *rc;
     struct lbst_node *next;

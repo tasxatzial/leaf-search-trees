@@ -1,20 +1,19 @@
-/* A library for creating and using dictionaries of integer (key, data) pairs */
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "lbst.h"
 #include "lbst_private.h"
 
-static void lbst_delete_descendants(struct lbst_node *node);
+static void lbst_delete_tree(struct lbst_node *node);
 
 
-/* Inserts a new (key, data) into the dictionary. If key is already in the
-dictionary, its data is updated.
+/* Inserts a new (key, val) into the dictionary. If key is already in the
+dictionary, its val is updated.
 
 Returns 1 on success, else 0.
 
 Time complexity: O(h) */
-int lbst_insert(lbst_T root, int key, int data) {
+int lbst_insert(lbst_T root, char *key, char *val) {
     struct lbst *root_private = root;
     struct lbst_node *ptr, *n1, *n2, *parent, *grparent;
 
@@ -23,14 +22,14 @@ int lbst_insert(lbst_T root, int key, int data) {
         return 0;
     }
 
-    /* special case: 0 (key, data) nodes */
+    /* special case: 0 (key, val) nodes */
     if (root_private->head == NULL) {
         ptr = malloc(sizeof(struct lbst_node));
-        if (ptr == NULL) {
+        ptr->key = strdup(key);
+        ptr->val = strdup(val);
+        if (ptr == NULL || ptr->key == NULL || ptr->val == NULL) {
             return 0;
         }
-        ptr->key = key;
-        ptr->data = data;
         ptr->next = NULL;
         ptr->lc = NULL;
         ptr->rc = NULL;
@@ -46,17 +45,18 @@ int lbst_insert(lbst_T root, int key, int data) {
     while(ptr != NULL) {
         grparent = parent;
         parent = ptr;
-        if (key <= ptr->key) {
-            ptr = ptr->lc;
+        if (strcmp(key, ptr->key) > 0) {
+            ptr = ptr->rc;
         }
         else {
-            ptr = ptr->rc;
+            ptr = ptr->lc;
         }
     }
 
-    /* update the parent data if the same key was provided */
-    if (parent->key == key) {
-        parent->data = data;
+    /* update the parent val if the same key was provided */
+    if (strcmp(parent->key, key) == 0) {
+        free(parent->val);
+        parent->val = strdup(val);
         return 1;
     }
 
@@ -79,22 +79,23 @@ int lbst_insert(lbst_T root, int key, int data) {
     n2->lc = parent;
     n2->rc = n1;
 
-    /* now arrange (key, data) of grparent, parent, n1, n2 based on
+    /* now arrange (key, val) of grparent, parent, n1, n2 based on
     the new key */
-    if (key <= parent->key) {
-        n1->key = parent->key;
-        n1->data = parent->data;
-        parent->key = key;
-        parent->data = data;
-        n2->key = key;
-        n2->data = data;
+    if (strcmp(key, parent->key) > 0) {
+        n1->key = strdup(key);
+        n1->val = strdup(val);
+        n2->key = strdup(parent->key);
+        n2->val = strdup(parent->val);
     }
     else {
-        n2->key = parent->key;
-        n2->data = parent->data;
-        n1->key = key;
-        n1->data = data;
+        n1->key = parent->key;
+        n1->val = parent->val;
+        n2->key = strdup(key);
+        n2->val = strdup(val);
+        parent->key = strdup(key);
+        parent->val = strdup(val);
     }
+
     if (grparent != NULL) {
         if (parent == grparent->lc) {
             grparent->lc = n2;
@@ -114,7 +115,7 @@ int lbst_insert(lbst_T root, int key, int data) {
 /* Deletes a key from the dictionary.
 
 Time complexity: O(h) */
-void lbst_delete(lbst_T root, int key) {
+void lbst_delete(lbst_T root, char *key) {
     struct lbst *root_private;
     struct lbst_node *ptr, *ptr2, *child, *parent, *grparent, *last_right_child;
 
@@ -137,16 +138,16 @@ void lbst_delete(lbst_T root, int key) {
         if (parent != NULL && parent->rc == child) {
             last_right_child = parent;
         }
-        if (key <= ptr->key) {
-            ptr = ptr->lc;
+        if (strcmp(key, ptr->key) > 0) {
+            ptr = ptr->rc;
         }
         else {
-            ptr = ptr->rc;
+            ptr = ptr->lc;
         }
     }
 
     /* nothing to do: key does not exist in the dictionary */
-    if (child == NULL || child->key != key) {
+    if (child == NULL || strcmp(child->key, key) != 0) {
         return;
     }
 
@@ -156,7 +157,12 @@ void lbst_delete(lbst_T root, int key) {
         child->lc = NULL;
         child->rc = NULL;
         root_private->head = NULL;
+        free(child->key);
+        free(child->val);
+        child->key = NULL;
+        child->val = NULL;
         free(child);
+        return;
     }
 
     /* start from from the left child of last_right_node and go to
@@ -205,53 +211,57 @@ void lbst_delete(lbst_T root, int key) {
     child->next = NULL;
     child->lc = NULL;
     child->rc = NULL;
+    free(child->key);
+    free(child->val);
+    child->key = NULL;
+    child->val = NULL;
     free(child);
 
     parent->next = NULL;
     parent->lc = NULL;
     parent->rc = NULL;
+    free(parent->key);
+    free(parent->val);
+    parent->key = NULL;
+    parent->val = NULL;
     free(parent);
 }
 
 
-/* Finds a key in the dictionary.
+/* Searches for a key in the dictionary.
 
-If key is found, return value is 1 and the specified data pointer provides
-access to key data.
-If key is not found, return value is 0 and the specified data pointer should
-be ignored.
+If found, it returns the a pointer to its val, else it returns NULL.
 
 Time complexity: O(h) */
-int lbst_lookup(lbst_T root, int key, int *data) {
+char *lbst_lookup(lbst_T root, char *key) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
 
     root_private = root;
     if (root_private == NULL) {
-        return 0;
+        return NULL;
     }
 
     ptr = root_private->head;
     prev = NULL;
     while(ptr != NULL) {
         prev = ptr;
-        if (key <= ptr->key) {
-            ptr = ptr->lc;
-        }
-        else {
+        if (strcmp(key, ptr->key) > 0) {
             ptr = ptr->rc;
         }
+        else {
+            ptr = ptr->lc;
+        }
     }
-    if (prev != NULL && prev->key == key) {
-        *data = prev->data;
-        return 1;
+    if (prev != NULL && strcmp(prev->key, key) == 0) {
+        return prev->val;
     }
 
-    return 0;
+    return NULL;
 }
 
 
-/* Returns 1 if dictionary has no (key, data) pairs, 0 otherwise */
+/* Returns 1 if dictionary has no keys, 0 otherwise */
 int lbst_is_empty(lbst_T root) {
     struct lbst *root_private;
 
@@ -264,8 +274,8 @@ int lbst_is_empty(lbst_T root) {
 }
 
 
-/* Creates and returns an empty dictionary. Its (key, data) pairs have
-type (int, int).
+/* Creates and returns an empty dictionary. Its (key, val) pairs have
+type (char *, char *).
 
 Returns NULL on fail. */
 lbst_T lbst_create() {
@@ -291,7 +301,7 @@ void lbst_clear(lbst_T root) {
     if (root_private == NULL) {
         return;
     }
-    lbst_delete_descendants(root_private->head);
+    lbst_delete_tree(root_private->head);
     root_private->head = NULL;
 }
 
@@ -311,22 +321,26 @@ void lbst_destroy(lbst_T root) {
 
 
 /* Deletes all descendant nodes of node */
-static void lbst_delete_descendants(struct lbst_node *node) {
+static void lbst_delete_tree(struct lbst_node *node) {
     if (node == NULL) {
         return;
     }
-    lbst_delete_descendants(node->lc);
-    lbst_delete_descendants(node->rc);
+    lbst_delete_tree(node->lc);
+    lbst_delete_tree(node->rc);
+    free(node->key);
+    free(node->val);
+    node->key = NULL;
+    node->val = NULL;
     node->lc = NULL;
     node->rc = NULL;
     free(node);
 }
 
 
-/* Prints (key, data) that satisfy first <= key <= last.
+/* Prints (key, val) that satisfy first <= key <= last.
 
 Time complexity: O(h + last - first) */
-void lbst_range_query(lbst_T root, int first, int last) {
+void lbst_range_query(lbst_T root, char *first, char *last) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
 
@@ -339,25 +353,25 @@ void lbst_range_query(lbst_T root, int first, int last) {
     prev = NULL;
     while(ptr != NULL) {
         prev = ptr;
-        if (ptr->key >= first) {
+        if (strcmp(first, ptr->key) > 0) {
+            ptr = ptr->rc;
+        } else {
             ptr = ptr->lc;
         }
-        else {
-            ptr = ptr->rc;
-        }
     }
-    if (prev != NULL && prev->key >= first && prev->key <= last) {
-        printf("[%d,%d] ", prev->key, prev->data);
+    if (prev != NULL && strcmp(first, prev->key) < 0 && strcmp(last, prev->key) > 0) {
+        printf("[%s :: %s] ", prev->key, prev->val);
     }
     prev = prev->next;
-    while (prev != NULL && prev->key <= last) {
-        printf("[%d,%d] ", prev->key, prev->data);
+    while (prev != NULL && strcmp(last, prev->key) > 0) {
+        printf("[%s :: %s] ", prev->key, prev->val);
         prev = prev->next;
     }
+    printf("\n");
 }
 
 
-/* Prints the dictionary. (key, data) pairs are sorted by key value.
+/* Prints the dictionary. (key, val) pairs are sorted by key (ascending).
 
 Time complexity: O(h + #keys) */
 void lbst_print(lbst_T root) {
@@ -380,7 +394,8 @@ void lbst_print(lbst_T root) {
     /* Use the next pointers to traverse the nodes
     that start from the leftmost leaf to the rightmost leaf */
     while(prev != NULL) {
-        printf("[%d,%d] ", prev->key, prev->data);
+        printf("[%s :: %s] ", prev->key, prev->val);
         prev = prev->next;
     }
+    printf("\n");
 }
