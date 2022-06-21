@@ -6,9 +6,8 @@
 /* Prints the full tree structure of the dictionary (preorder traversal) */
 void lbst_print_tree(struct lbst *root, void (*print)(char *key, void *val)) {
     assert(print);
-    if (root == NULL) {
-        return;
-    }
+    assert(root);
+
     lbst_print_subtree(root->head, print);
 }
 

@@ -56,7 +56,7 @@ int main() {
             printf("%s\n", val);
         }
         else {
-            printf("NULL\n");
+            printf("Not found\n");
         }
     }
     
@@ -186,7 +186,9 @@ val: pointer to a void value (treated as char*).
 Returns: void */
 static void print(char *key, void *val) {
     char *value;
-    assert(val);
+
+    assert(key);
+
     value = val;
     printf("[%s::%s]", key, value);
 

@@ -18,10 +18,8 @@ int lbst_insert(lbst_T root, char *key, void *val) {
     struct lbst *root_private = root;
     struct lbst_node *ptr, *n1, *n2, *parent, *grparent;
 
-    /* special case: root has not been initialized using lbst_create() */
-    if (root_private == NULL) {
-        return 0;
-    }
+    assert(key);
+    assert(root_private);
 
     /* special case: 0 (key, val) nodes */
     if (root_private->head == NULL) {
@@ -116,13 +114,11 @@ int lbst_insert(lbst_T root, char *key, void *val) {
 
 Time complexity: O(h) */
 void lbst_delete(lbst_T root, char *key) {
-    struct lbst *root_private;
+    struct lbst *root_private = root;
     struct lbst_node *ptr, *ptr2, *child, *parent, *grparent, *last_right_child;
 
-    root_private = root;
-    if (root_private == NULL) {
-        return;
-    }
+    assert(key);
+    assert(root_private);
 
     /* traverse the tree based on the key and find the leaf node that
     has the key */
@@ -231,13 +227,11 @@ If found, it returns the a pointer to its val, else it returns NULL.
 
 Time complexity: O(h) */
 void *lbst_lookup(lbst_T root, char *key) {
-    struct lbst *root_private;
+    struct lbst *root_private = root;
     struct lbst_node *ptr, *prev;
 
-    root_private = root;
-    if (root_private == NULL) {
-        return NULL;
-    }
+    assert(key);
+    assert(root_private);
 
     ptr = root_private->head;
     prev = NULL;
@@ -260,10 +254,11 @@ void *lbst_lookup(lbst_T root, char *key) {
 
 /* Returns 1 if dictionary has no keys, 0 otherwise */
 int lbst_is_empty(lbst_T root) {
-    struct lbst *root_private;
+    struct lbst *root_private = root;
 
-    root_private = root;
-    if (root_private == NULL || root_private->head == NULL) {
+    assert(root_private);
+
+    if (root_private->head == NULL) {
         return 1;
     }
 
@@ -292,12 +287,10 @@ lbst_T lbst_create() {
 /* Clears the dictionary. The function lbst_is_empty() returns 1 after
 calling this one. */
 void lbst_clear(lbst_T root) {
-    struct lbst *root_private;
+    struct lbst *root_private = root;
 
-    root_private = root;
-    if (root_private == NULL) {
-        return;
-    }
+    assert(root_private);
+
     lbst_delete_tree(root_private->head);
     root_private->head = NULL;
 }
@@ -306,12 +299,10 @@ void lbst_clear(lbst_T root) {
 /* Destroys the dictionary. No other functions should be called after
 calling this one. */
 void lbst_destroy(lbst_T root) {
-    struct lbst *root_private;
+    struct lbst *root_private = root;
 
-    root_private = root;
-    if (root_private == NULL) {
-        return;
-    }
+    assert(root_private);
+
     lbst_clear(root);
     free(root_private);
 }
@@ -337,15 +328,13 @@ static void lbst_delete_tree(struct lbst_node *node) {
 
 Time complexity: O(h + last - first) */
 void lbst_range_query(lbst_T root, char *first, char *last, void (*print)(char *key, void *val)) {
-    struct lbst *root_private;
+    struct lbst *root_private = root;
     struct lbst_node *ptr, *prev;
 
     assert(print);
-
-    root_private = root;
-    if (root_private == NULL) {
-        return;
-    }
+    assert(first);
+    assert(last);
+    assert(root_private);
 
     ptr = root_private->head;
     prev = NULL;
@@ -375,15 +364,11 @@ void lbst_range_query(lbst_T root, char *first, char *last, void (*print)(char *
 
 Time complexity: O(h + #keys) */
 void lbst_print(lbst_T root, void (*print)(char *key, void *val)) {
-    struct lbst *root_private;
+    struct lbst *root_private = root;
     struct lbst_node *ptr, *prev;
 
     assert(print);
-
-    root_private = root;
-    if (root_private == NULL) {
-        return;
-    }
+    assert(root_private);
 
     /* Go to leftmost leaf node */
     ptr = root_private->head;
