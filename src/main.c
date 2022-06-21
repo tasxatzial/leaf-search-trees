@@ -18,7 +18,6 @@ int main() {
     char **keys, **vals;
     lbst_T root;
 
-    /* create dictionary */
     root = lbst_create();
     srand(time(NULL));
 
@@ -30,8 +29,6 @@ int main() {
     for (i = 0; i < 10; i++) {
         printf("+ [%s :: %s]\n", keys[i], vals[i]);
         lbst_insert(root, keys[i], vals[i]);
-
-        /* print dictionary after each insertion */
         lbst_print(root, print);
     }
 
@@ -41,7 +38,6 @@ int main() {
     }
     free(keys);
 
-    /* print full tree */
     printf("----------Print tree (preorder traversal)----------\n");
     lbst_print_tree(root, print);
 
@@ -66,7 +62,6 @@ int main() {
     }
     free(keys);
 
-    /* lookup keys in [a, b] */
     printf("----------Range Query [ba to ca]------------------------\n");
     lbst_range_query(root, "ba", "ca", print);
 
@@ -86,37 +81,30 @@ int main() {
     }
     free(keys);
 
-    /* clear dictionary */
     printf("---------------------------------------------------\n");
     printf("Clear dictionary\n");
     lbst_clear(root);
 
-    /* check if empty */
     printf("Check if dictionary is empty (should print 1): %d\n", lbst_is_empty(root));
 
-    /* should print nothing */
     printf("Print dictionary: ");
     lbst_print(root, print);
 
-    /* re-use dictionary: insert */
-    printf("Re-use dictionary. Insert ['nice', 'day']\n");
+    printf("Insert ['nice', 'day']\n");
     lbst_insert(root, "nice", "day");
 
     printf("Print dictionary: ");
     lbst_print(root, print);
     
-    /* clear dictionary */
-    printf("Clear dictionary\n");
-    lbst_clear(root);
+    printf("Delete 'nice'\n");
+    lbst_delete(root, "nice");
 
     printf("Print dictionary: ");
     lbst_print(root, print);
 
-    /* check if empty */
     printf("Check if dictionary is empty (should print 1): %d\n", lbst_is_empty(root));
 
-    /* destroy dictionary.
-    We cannot call any other functions after this */
+    /* We cannot call any other functions after destroy */
     printf("Destroy dictionary\n");
     lbst_destroy(root);
 
