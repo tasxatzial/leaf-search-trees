@@ -12,10 +12,14 @@ struct lbst {
 
 /* Tree nodes (non root) that store a (key, val) pair.
 Leaf nodes have lc and rc equal to NULL.
-Internal nodes have lc and rc not NULL*/
+Internal nodes have lc and rc not NULL
+
+Note: A node owns its key. That means each node should have a copy of
+the key. On the other hand, a node does not own its val because it has
+type void* */
 struct lbst_node {
     char *key;
-    char *val;
+    void *val;
     struct lbst_node *lc;
     struct lbst_node *rc;
     struct lbst_node *next;

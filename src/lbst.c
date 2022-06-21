@@ -14,7 +14,7 @@ dictionary, its val is updated.
 Returns 1 on success, else 0.
 
 Time complexity: O(h) */
-int lbst_insert(lbst_T root, char *key, char *val) {
+int lbst_insert(lbst_T root, char *key, void *val) {
     struct lbst *root_private = root;
     struct lbst_node *ptr, *n1, *n2, *parent, *grparent;
 
@@ -27,8 +27,8 @@ int lbst_insert(lbst_T root, char *key, char *val) {
     if (root_private->head == NULL) {
         ptr = malloc(sizeof(struct lbst_node));
         ptr->key = strdup(key);
-        ptr->val = strdup(val);
-        if (ptr == NULL || ptr->key == NULL || ptr->val == NULL) {
+        ptr->val = val;
+        if (ptr == NULL || ptr->key == NULL) {
             return 0;
         }
         ptr->next = NULL;
@@ -56,8 +56,7 @@ int lbst_insert(lbst_T root, char *key, char *val) {
 
     /* update the parent val if the same key was provided */
     if (strcmp(parent->key, key) == 0) {
-        free(parent->val);
-        parent->val = strdup(val);
+        parent->val = val;
         return 1;
     }
 
@@ -84,17 +83,17 @@ int lbst_insert(lbst_T root, char *key, char *val) {
     the new key */
     if (strcmp(key, parent->key) > 0) {
         n1->key = strdup(key);
-        n1->val = strdup(val);
+        n1->val = val;
         n2->key = strdup(parent->key);
-        n2->val = strdup(parent->val);
+        n2->val = parent->val;
     }
     else {
         n1->key = parent->key;
         n1->val = parent->val;
         n2->key = strdup(key);
-        n2->val = strdup(val);
+        n2->val = val;
         parent->key = strdup(key);
-        parent->val = strdup(val);
+        parent->val = val;
     }
 
     if (grparent != NULL) {
@@ -159,7 +158,6 @@ void lbst_delete(lbst_T root, char *key) {
         child->rc = NULL;
         root_private->head = NULL;
         free(child->key);
-        free(child->val);
         child->key = NULL;
         child->val = NULL;
         free(child);
@@ -213,7 +211,6 @@ void lbst_delete(lbst_T root, char *key) {
     child->lc = NULL;
     child->rc = NULL;
     free(child->key);
-    free(child->val);
     child->key = NULL;
     child->val = NULL;
     free(child);
@@ -222,7 +219,6 @@ void lbst_delete(lbst_T root, char *key) {
     parent->lc = NULL;
     parent->rc = NULL;
     free(parent->key);
-    free(parent->val);
     parent->key = NULL;
     parent->val = NULL;
     free(parent);
@@ -234,7 +230,7 @@ void lbst_delete(lbst_T root, char *key) {
 If found, it returns the a pointer to its val, else it returns NULL.
 
 Time complexity: O(h) */
-char *lbst_lookup(lbst_T root, char *key) {
+void *lbst_lookup(lbst_T root, char *key) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
 
@@ -276,7 +272,7 @@ int lbst_is_empty(lbst_T root) {
 
 
 /* Creates and returns an empty dictionary. Its (key, val) pairs have
-type (char *, char *).
+type (char*, void*).
 
 Returns NULL on fail. */
 lbst_T lbst_create() {
@@ -329,7 +325,6 @@ static void lbst_delete_tree(struct lbst_node *node) {
     lbst_delete_tree(node->lc);
     lbst_delete_tree(node->rc);
     free(node->key);
-    free(node->val);
     node->key = NULL;
     node->val = NULL;
     node->lc = NULL;

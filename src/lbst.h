@@ -12,7 +12,7 @@ dictionary, its val is updated.
 Returns 1 on success, else 0.
 
 Time complexity: O(h) */
-int lbst_insert(lbst_T root, char *key, char *val);
+int lbst_insert(lbst_T root, char *key, void *val);
 
 
 /* Deletes a key from the dictionary.
@@ -26,7 +26,7 @@ void lbst_delete(lbst_T root, char *key);
 If found, it returns the a pointer to its val, else it returns NULL.
 
 Time complexity: O(h) */
-char *lbst_lookup(lbst_T root, char *key);
+void *lbst_lookup(lbst_T root, char *key);
 
 
 /* Returns 1 if dictionary has no keys, 0 otherwise */
@@ -34,7 +34,7 @@ int lbst_is_empty(lbst_T root);
 
 
 /* Creates and returns an empty dictionary. Its (key, val) pairs have
-type (char *, char *).
+type (char*, void*).
 
 Returns NULL on fail.*/
 lbst_T lbst_create();
