@@ -23,11 +23,11 @@ struct lbst_node {
 
 
 /* Prints the full tree structure of the dictionary (preorder traversal) */
-void lbst_print_tree(struct lbst *root);
+void lbst_print_tree(struct lbst *root, void (*print)(char *key, void *val));
 
 
 /* Prints the full tree structure of the subtree (preorder traversal) */
-void lbst_print_subtree(struct lbst_node *node);
+void lbst_print_subtree(struct lbst_node *node, void (*print)(char *key, void *val));
 
 
 #endif

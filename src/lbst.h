@@ -53,12 +53,12 @@ void lbst_destroy(lbst_T root);
 /* Prints (key, val) that satisfy first <= key <= last.
 
 Time complexity: O(h + last - first) */
-void lbst_range_query(lbst_T root, char *first, char *last);
+void lbst_range_query(lbst_T root, char *first, char *last, void (*print)(char *key, void *val));
 
 
-/* Prints the dictionary. (key, val) pairs are sorted by key.
+/* Prints the dictionary. (key, val) pairs are sorted by key (ascending).
 
 Time complexity: O(h + #keys) */
-void lbst_print(lbst_T root);
+void lbst_print(lbst_T root, void (*print)(char *key, void *val));
 
 #endif

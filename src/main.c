@@ -8,32 +8,9 @@
 #include "lbst.h"
 #include "lbst_private.h"
 
-static char** random_strings(char *alphabet, int num_keys, int max_key_len) {
-    char **keys;
-    int i, j, rand_int, alpha_length;
-    
-    assert(alphabet);
-    assert(num_keys >= 0);
-    assert(max_key_len > 0);
-    alpha_length  = strlen(alphabet);
-    assert(alpha_length);
-    keys = malloc(num_keys * sizeof(char *));
-    assert(keys);
+static char** random_strings(char *alphabet, int num_keys, int max_key_len);
+static void print(char *key, void *val);
 
-    for (i = 0; i < num_keys; i++) {
-
-        /* generate a random length for each key */
-        rand_int = rand() % max_key_len + 1;
-        keys[i] = malloc((rand_int + 1) * sizeof(char));
-
-        /* fill the key with random characters from alphabet */
-        for (j = 0; j < rand_int; j++) {
-            keys[i][j] = alphabet[rand() % alpha_length];
-        }
-        keys[i][j] = '\0';
-    }
-    return keys;
-}
 
 int main() {
     int i, j;
@@ -55,20 +32,18 @@ int main() {
         lbst_insert(root, keys[i], vals[i]);
 
         /* print dictionary after each insertion */
-        lbst_print(root);
+        lbst_print(root, print);
     }
 
-    /* we no longer need the keys, vals */
+    /* we no longer need the keys but we need the vals */
     for (i = 0; i < 10; i++) {
         free(keys[i]);
-        free(vals[i]);
     }
     free(keys);
-    free(vals);
 
     /* print full tree */
     printf("----------Print tree (preorder traversal)----------\n");
-    lbst_print_tree(root);
+    lbst_print_tree(root, print);
 
     /* lookup random keys */
     printf("----------Lookup-----------------------------------\n");
@@ -93,7 +68,7 @@ int main() {
 
     /* lookup keys in [a, b] */
     printf("----------Range Query [ba to ca]------------------------\n");
-    lbst_range_query(root, "ba", "ca");
+    lbst_range_query(root, "ba", "ca", print);
 
     /* delete random keys */
     printf("----------Delete-----------------------------------\n");
@@ -102,7 +77,7 @@ int main() {
         j = rand() % 10;
         printf("- %s\n", keys[j]);
         lbst_delete(root, keys[j]);
-        lbst_print(root);
+        lbst_print(root, print);
     }
 
     /* we no longer need the keys */
@@ -121,21 +96,21 @@ int main() {
 
     /* should print nothing */
     printf("Print dictionary: ");
-    lbst_print(root);
+    lbst_print(root, print);
 
     /* re-use dictionary: insert */
     printf("Re-use dictionary. Insert ['nice', 'day']\n");
     lbst_insert(root, "nice", "day");
 
     printf("Print dictionary: ");
-    lbst_print(root);
+    lbst_print(root, print);
     
     /* clear dictionary */
     printf("Clear dictionary\n");
     lbst_clear(root);
 
     printf("Print dictionary: ");
-    lbst_print(root);
+    lbst_print(root, print);
 
     /* check if empty */
     printf("Check if dictionary is empty (should print 1): %d\n", lbst_is_empty(root));
@@ -145,5 +120,75 @@ int main() {
     printf("Destroy dictionary\n");
     lbst_destroy(root);
 
+    /* clear whatever is left */
+    for (i = 0; i < 10; i++) {
+        free(vals[i]);
+    }
+    free(vals);
+
     return 0;
+}
+
+
+/* Creates an array of character arrays (keys). Each key has
+at most max_key_len characters and is created by selecting random characters
+from the character array alphabet.
+
+Runtime checks:
+1) if alphabet is not NULL
+2) if length of alphabet is not 0
+3) if number of keys is >=0
+4) if maximum key length is >0
+5) if memory was allocated succesfully for keys
+
+Parameters:
+alphabet: pointer to an array of characters. Must be null-terminated.
+num_keys: the number of keys in the array.
+max_key_len: the maximum number of characters in each key.
+
+Returns: a pointer to an array of non-empty null-terminated keys. */
+static char** random_strings(char *alphabet, int num_keys, int max_key_len) {
+    char **keys;
+    int i, j, rand_int, alpha_length;
+
+    assert(alphabet);
+    assert(num_keys >= 0);
+    assert(max_key_len > 0);
+    alpha_length  = strlen(alphabet);
+    assert(alpha_length);
+    keys = malloc(num_keys * sizeof(char *));
+    assert(keys);
+
+    for (i = 0; i < num_keys; i++) {
+
+        /* generate a random length for each key */
+        rand_int = rand() % max_key_len + 1;
+        keys[i] = malloc((rand_int + 1) * sizeof(char));
+
+        /* fill the key with random characters from alphabet */
+        for (j = 0; j < rand_int; j++) {
+            keys[i][j] = alphabet[rand() % alpha_length];
+        }
+        keys[i][j] = '\0';
+    }
+    return keys;
+}
+
+
+/* Prints the key and val of a dictionary entry.
+
+Checks: if val is not NULL at runtime.
+
+Parameters:
+key: pointer to a character array. Must be null-terminated.
+val: pointer to a void value (treated as char*).
+
+Returns: void */
+static void print(char *key, void *val) {
+    char *value;
+    assert(val);
+    value = val;
+    printf("[%s::%s]", key, value);
+
+    return;
 }

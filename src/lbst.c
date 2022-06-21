@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "lbst.h"
 #include "lbst_private.h"
 
@@ -340,9 +341,11 @@ static void lbst_delete_tree(struct lbst_node *node) {
 /* Prints (key, val) that satisfy first <= key <= last.
 
 Time complexity: O(h + last - first) */
-void lbst_range_query(lbst_T root, char *first, char *last) {
+void lbst_range_query(lbst_T root, char *first, char *last, void (*print)(char *key, void *val)) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
+
+    assert(print);
 
     root_private = root;
     if (root_private == NULL) {
@@ -360,11 +363,13 @@ void lbst_range_query(lbst_T root, char *first, char *last) {
         }
     }
     if (prev != NULL && strcmp(first, prev->key) < 0 && strcmp(last, prev->key) > 0) {
-        printf("[%s :: %s] ", prev->key, prev->val);
+        print(prev->key, prev->val);
+        printf(" ");
     }
     prev = prev->next;
     while (prev != NULL && strcmp(last, prev->key) > 0) {
-        printf("[%s :: %s] ", prev->key, prev->val);
+        print(prev->key, prev->val);
+        printf(" ");
         prev = prev->next;
     }
     printf("\n");
@@ -374,9 +379,11 @@ void lbst_range_query(lbst_T root, char *first, char *last) {
 /* Prints the dictionary. (key, val) pairs are sorted by key (ascending).
 
 Time complexity: O(h + #keys) */
-void lbst_print(lbst_T root) {
+void lbst_print(lbst_T root, void (*print)(char *key, void *val)) {
     struct lbst *root_private;
     struct lbst_node *ptr, *prev;
+
+    assert(print);
 
     root_private = root;
     if (root_private == NULL) {
@@ -394,7 +401,8 @@ void lbst_print(lbst_T root) {
     /* Use the next pointers to traverse the nodes
     that start from the leftmost leaf to the rightmost leaf */
     while(prev != NULL) {
-        printf("[%s :: %s] ", prev->key, prev->val);
+        print(prev->key, prev->val);
+        printf(" ");
         prev = prev->next;
     }
     printf("\n");
