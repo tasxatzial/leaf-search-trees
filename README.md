@@ -22,7 +22,7 @@ The library exposes the dictionary as an [opaque data type](https://en.wikipedia
 
 C-strings are supported as keys and are stored directly in the dictionary. Values can be of any type, therefore they should already be stored in a different data structure.
 
-Internally the dictionary is stored as a leaf-oriented binary search tree structure. Time complexity of operations 'insert', 'delete', 'lookup' is O(tree_height) whereas 'range_query' has a complexity of O(tree_height + last - first). More details can be found in [lbst.md](docs/lbst.md) (english) and [lbst.pdf](docs/lbst.pdf) (greek).
+Internally the dictionary is stored as a leaf-oriented binary search tree structure. Time complexity of operations 'insert', 'delete', 'lookup' is O(tree_height) whereas 'range_query' has a complexity of O(tree_height + last - first). More details can be found in [lbst.md](lbst.md).
 
 For a simpler version of the library that supports only (int, int) pairs, see [lbst-dictionary-int](https://github.com/tasxatzial/lbst-dictionary-int).
 
