@@ -9,7 +9,9 @@ typedef void* lbst_T;
 /* Inserts a new (key, val) into the dictionary. If key is already in the
 dictionary, its val is updated.
 
-Returns 1 on success, else 0.
+Returns:
+* 1 If key was added/updated.
+* -1 On error.
 
 Time complexity: O(h) */
 int lbst_insert(lbst_T root, char *key, void *val);
@@ -17,8 +19,12 @@ int lbst_insert(lbst_T root, char *key, void *val);
 
 /* Deletes a key from the dictionary.
 
+Returns:
+* 1 If the key is found and deleted.
+* 0 If the key is not found.
+
 Time complexity: O(h) */
-void lbst_delete(lbst_T root, char *key);
+int lbst_delete(lbst_T root, char *key);
 
 
 /* Searches for a key in the dictionary.

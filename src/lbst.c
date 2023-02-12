@@ -11,7 +11,9 @@ static void lbst_delete_tree(struct lbst_node *node);
 /* Inserts a new (key, val) into the dictionary. If key is already in the
 dictionary, its val is updated.
 
-Returns 1 on success, else 0.
+Returns:
+* 1 If key was added/updated.
+* -1 On error.
 
 Time complexity: O(h) */
 int lbst_insert(lbst_T root, char *key, void *val) {
@@ -24,11 +26,15 @@ int lbst_insert(lbst_T root, char *key, void *val) {
     /* special case: 0 (key, val) nodes */
     if (root_private->head == NULL) {
         ptr = malloc(sizeof(struct lbst_node));
-        ptr->key = strdup(key);
-        ptr->val = val;
-        if (ptr == NULL || ptr->key == NULL) {
-            return 0;
+        if (ptr == NULL) {
+            return -1;
         }
+        ptr->key = strdup(key);
+        if (ptr->key == NULL) {
+            free(ptr);
+            return -1;
+        }
+        ptr->val = val;
         ptr->next = NULL;
         ptr->lc = NULL;
         ptr->rc = NULL;
@@ -60,9 +66,13 @@ int lbst_insert(lbst_T root, char *key, void *val) {
 
     /* create two new nodes n1, n2 */
     n1 = malloc(sizeof(struct lbst_node));
+    if (n1 == NULL) {
+        return -1;
+    }
     n2 = malloc(sizeof(struct lbst_node));
-    if (n1 == NULL || n2 == NULL) {
-        return 0;
+    if (n2 == NULL) {
+        free(n1);
+        return -1;
     }
     n1->rc = NULL;
     n1->lc = NULL;
@@ -81,16 +91,38 @@ int lbst_insert(lbst_T root, char *key, void *val) {
     the new key */
     if (strcmp(key, parent->key) > 0) {
         n1->key = strdup(key);
+        if (n1->key == NULL) {
+            free(n1);
+            free(n2);
+            return -1;
+        }
         n1->val = val;
         n2->key = strdup(parent->key);
+        if (n2->key == NULL) {
+            free(n1);
+            free(n2);
+            free(n1->key);
+            return -1;
+        }
         n2->val = parent->val;
     }
     else {
         n1->key = parent->key;
         n1->val = parent->val;
         n2->key = strdup(key);
+        if (n2->key == NULL) {
+            free(n1);
+            free(n2);
+            return -1;
+        }
         n2->val = val;
         parent->key = strdup(key);
+        if (parent->key == NULL) {
+            free(n1);
+            free(n2);
+            free(n2->key);
+            return -1;
+        }
         parent->val = val;
     }
 
@@ -112,8 +144,12 @@ int lbst_insert(lbst_T root, char *key, void *val) {
 
 /* Deletes a key from the dictionary.
 
+Returns:
+* 1 If the key is found and deleted.
+* 0 If the key is not found.
+
 Time complexity: O(h) */
-void lbst_delete(lbst_T root, char *key) {
+int lbst_delete(lbst_T root, char *key) {
     struct lbst *root_private = root;
     struct lbst_node *ptr, *ptr2, *child, *parent, *grparent, *last_right_child;
 
@@ -144,7 +180,7 @@ void lbst_delete(lbst_T root, char *key) {
 
     /* nothing to do: key does not exist in the dictionary */
     if (child == NULL || strcmp(child->key, key) != 0) {
-        return;
+        return 0;
     }
 
     /* key was found in a leaf but parent is NULL: root node has the key */
@@ -157,7 +193,7 @@ void lbst_delete(lbst_T root, char *key) {
         child->key = NULL;
         child->val = NULL;
         free(child);
-        return;
+        return 1;
     }
 
     /* start from from the left child of last_right_node and go to
@@ -218,6 +254,8 @@ void lbst_delete(lbst_T root, char *key) {
     parent->key = NULL;
     parent->val = NULL;
     free(parent);
+
+    return 1;
 }
 
 
