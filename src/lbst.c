@@ -99,9 +99,9 @@ int lbst_insert(lbst_T root, char *key, void *val) {
         n1->val = val;
         n2->key = strdup(parent->key);
         if (n2->key == NULL) {
+            free(n1->key);
             free(n1);
             free(n2);
-            free(n1->key);
             return -1;
         }
         n2->val = parent->val;
@@ -118,9 +118,9 @@ int lbst_insert(lbst_T root, char *key, void *val) {
         n2->val = val;
         parent->key = strdup(key);
         if (parent->key == NULL) {
+            free(n2->key);
             free(n1);
             free(n2);
-            free(n2->key);
             return -1;
         }
         parent->val = val;
