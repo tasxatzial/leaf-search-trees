@@ -24,7 +24,7 @@ C-strings are supported as keys and are stored directly in the dictionary. Value
 
 Time complexity is O(tree_height) for 'insert', 'delete', 'lookup' and O(tree_height + number of keys) for 'range_query'. Details can be found in [lbst.md](lbst.md).
 
-For a simpler version of the library that supports only (int, int) pairs, see [leaf-search-tree-int.c](https://github.com/tasxatzial/leaf-search-tree-int.c).
+For a simpler version of the library that supports only (int, int) pairs, see [leaf-search-tree-int](https://github.com/tasxatzial/leaf-search-tree-int).
 
 ## Compile
 
